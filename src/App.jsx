@@ -17,7 +17,7 @@ const App = () => {
 
   return (
     <div>
-      {!token && <Navbar />}
+      {!token && !accessToken && <Navbar />}
       <Routes>
         <Route path="/" element={<Content />} />
         <Route path="/signup" element={<Signup />} />

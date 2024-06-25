@@ -1,8 +1,10 @@
 import React from "react";
 import { authLinks } from "../constants";
 import { MdAdminPanelSettings, MdHome, MdWallet } from "react-icons/md";
+import { AiFillShopping } from "react-icons/ai";
 import { FaUserGroup } from "react-icons/fa6";
 import { FaExchangeAlt } from "react-icons/fa";
+import { SiHomeassistantcommunitystore } from "react-icons/si";
 
 const Sidebar = ({ toggle, setActiveLink, activeLink }) => {
   return (
@@ -10,7 +12,7 @@ const Sidebar = ({ toggle, setActiveLink, activeLink }) => {
       <div className="h-full p-6 overflow-y-auto">
         <h3 className="flex items-center gap-2 text-xl mb-4 uppercase font-bold">
           {" "}
-          <MdAdminPanelSettings /> iTrust Admin
+          <MdAdminPanelSettings /> rh4ogs Admin
         </h3>
         <ul className="flex flex-col gap-2">
           {authLinks.map((lnk) => (
@@ -19,7 +21,7 @@ const Sidebar = ({ toggle, setActiveLink, activeLink }) => {
                 onClick={() => setActiveLink(lnk.id)}
                 className={
                   lnk.id === activeLink
-                    ? "flex items-center flex-row-reverse gap-2 py-2 px-4 hover:bg-gray-200 rounded text-blue-500 text-sm font-medium"
+                    ? "flex items-center flex-row-reverse gap-2 py-2 px-4 hover:bg-gray-200 rounded text-red-500 text-sm font-medium"
                     : "flex items-center flex-row-reverse gap-2 py-2 px-4 hover:bg-gray-200 rounded text-sm font-medium"
                 }
               >
@@ -32,6 +34,10 @@ const Sidebar = ({ toggle, setActiveLink, activeLink }) => {
                   <FaExchangeAlt />
                 ) : lnk.id === "wallet" ? (
                   <MdWallet />
+                ) : lnk.id === "product" ? (
+                  <SiHomeassistantcommunitystore />
+                ) : lnk.id === "order" ? (
+                  <AiFillShopping />
                 ) : null}
               </button>
             </li>

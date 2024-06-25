@@ -14,17 +14,18 @@ const header = [
     id: "email",
     name: "email",
   },
+
   {
-    id: "phone",
-    name: "phone",
+    id: "completedOrders",
+    name: "completedOrders",
   },
   {
-    id: "occupation",
-    name: "occupation",
+    id: "pendingOrders",
+    name: "pendingOrders",
   },
   {
-    id: "currency",
-    name: "currency",
+    id: "createdAt",
+    name: "createdAt",
   },
 ];
 
@@ -51,7 +52,9 @@ const Users = () => {
     }
   }, [users]);
 
-  console.log(myUsers);
+  if (getLoading) {
+    return <p className="mt-5">Getting users...</p>;
+  }
 
   return (
     <div>

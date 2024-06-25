@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Datatable from "../components/Datatable";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
 import { getAllWallets } from "../features/walletSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const header = [
+  {
+    id: "_id",
+    name: "id",
+  },
   {
     id: "owner",
     name: "owner",
   },
   {
-    id: "trade",
-    name: "trading balance",
-  },
-  {
-    id: "total",
-    name: "overall balance",
+    id: "balance",
+    name: "balance",
   },
 ];
 
@@ -25,7 +25,8 @@ const Wallets = () => {
   const dispatch = useDispatch();
 
   const accessToken = getAccessToken();
-  const { getWalletError, getWalletLoading, wallet } = useSelector(
+  const [myWallets, setMyWallets] = useState([]);
+  const { getWalletsError, getWalletsLoading, wallets } = useSelector(
     (state) => state.wallet
   );
 
@@ -37,11 +38,21 @@ const Wallets = () => {
     }
   }, [accessToken]);
 
+  useEffect(() => {
+    if (wallets) {
+      setMyWallets(wallets.wallets);
+    }
+  }, [wallets]);
+
+  if (getWalletsLoading) {
+    return <p className="mt-5">Getting wallets...</p>;
+  }
+
   return (
     <div>
       <h3 className="font-bold text-lg p-4">Wallets</h3>
       <div>
-        <Datatable headers={header} />
+        <Datatable headers={header} data={myWallets} />
       </div>
     </div>
   );

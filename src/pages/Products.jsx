@@ -4,23 +4,24 @@ import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
 import { useDispatch, useSelector } from "react-redux";
 import { getTrnxs } from "../features/trnxSlice";
-
+import { getProducts } from "../features/productSlice";
+import { FaPlusCircle } from "react-icons/fa";
 const header = [
   {
-    id: "amt",
-    name: "amount",
+    id: "_id",
+    name: "id",
   },
   {
-    id: "cid",
-    name: "creator ID",
+    id: "name",
+    name: "name",
   },
   {
-    id: "type",
-    name: "type",
+    id: "price",
+    name: "price",
   },
   {
-    id: "status",
-    name: "status",
+    id: "category",
+    name: "category",
   },
 ];
 
@@ -29,27 +30,32 @@ const Products = () => {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
   const [myProducts, setmyProducts] = useState([]);
-  //   const { getTransactionError, getTransactionLoading, trnxs } = useSelector(
-  //     (state) => state.trnx
-  //   );
+  const { getProductError, getProductLoading, products } = useSelector(
+    (state) => state.product
+  );
 
   useEffect(() => {
     if (!accessToken) {
       navigate("/");
     } else {
-      //   dispatch(getTrnxs());
+      dispatch(getProducts());
     }
   }, [accessToken]);
 
-  //   useEffect(() => {
-  //     if (users) {
-  //       setMyUsers(users.users);
-  //     }
-  //   }, [users]);
+  useEffect(() => {
+    if (products) {
+      setmyProducts(products.products);
+    }
+  }, [products]);
 
   return (
     <div>
-      <h3 className="font-bold text-lg p-4">Products</h3>
+      <div className="flex justify-between items-center my-5">
+        <h3 className="font-bold text-lg p-4">Products</h3>
+        <button className=" text-white items-center gap-1 capitalize text-xs font-medium bg-red-600 inline-flex px-3 py-3 rounded-md mr-10">
+          <FaPlusCircle /> create product
+        </button>
+      </div>
       <div>
         <Datatable headers={header} data={myProducts} />
       </div>

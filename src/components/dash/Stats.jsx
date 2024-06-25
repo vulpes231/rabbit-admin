@@ -8,6 +8,10 @@ import { getAccessToken } from "../../utils/utilities";
 import { getTrnxs } from "../../features/trnxSlice";
 import { getUsers } from "../../features/userSlice";
 import { FaDatabase } from "react-icons/fa6";
+import { AiFillShopping } from "react-icons/ai";
+import { getProducts } from "../../features/productSlice";
+import { getOrders } from "../../features/orderSlice";
+import { getAllWallets } from "../../features/walletSlice";
 
 const Stats = () => {
   const dispatch = useDispatch();
@@ -16,6 +20,7 @@ const Stats = () => {
   const { trnxs } = useSelector((state) => state.trnx);
   const { orders } = useSelector((state) => state.order);
   const { wallets } = useSelector((state) => state.wallet);
+  const { products } = useSelector((state) => state.product);
 
   // console.log(users?.users?.length);
 
@@ -23,7 +28,9 @@ const Stats = () => {
     if (accessToken) {
       dispatch(getTrnxs());
       dispatch(getUsers());
-      // dispatch(getTrnxs())
+      dispatch(getAllWallets());
+      dispatch(getProducts());
+      dispatch(getOrders());
     }
   }, [accessToken, dispatch]);
   return (
@@ -36,7 +43,7 @@ const Stats = () => {
       <Box
         icon={<FaBoxArchive />}
         title={"transactions"}
-        value={trnxs?.trnxs?.length ? trnxs.trnx.length : 0}
+        value={trnxs?.trnx?.length ? trnxs.trnx.length : 0}
       />
       <Box
         icon={<MdAdminPanelSettings />}
@@ -47,6 +54,11 @@ const Stats = () => {
         icon={<FaDatabase />}
         title={"orders"}
         value={orders?.orders?.length ? orders.orders.length : 0}
+      />
+      <Box
+        icon={<AiFillShopping />}
+        title={"products"}
+        value={products?.products?.length ? products.products.length : 0}
       />
     </div>
   );

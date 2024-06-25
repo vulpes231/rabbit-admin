@@ -16,14 +16,14 @@ const initialState = {
 export const getProducts = createAsyncThunk("product/getProducts", async () => {
   try {
     const accessToken = getAccessToken();
-    const url = `${liveServer}/manageproducts`;
+    const url = `${liveServer}/products`;
     const response = await axios.get(url, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    // console.log("Trnx", response.data);
+    // console.log("Products", response.data);
     return response.data;
   } catch (error) {
     if (error.response) {
@@ -47,7 +47,7 @@ export const createProduct = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      // console.log("Trnx", response.data);
+      // console.log("Products", response.data);
       return response.data;
     } catch (error) {
       if (error.response) {

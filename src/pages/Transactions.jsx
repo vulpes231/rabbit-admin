@@ -7,16 +7,20 @@ import { getTrnxs } from "../features/trnxSlice";
 
 const header = [
   {
-    id: "amt",
+    id: "_id",
+    name: "_id",
+  },
+  {
+    id: "amount",
     name: "amount",
   },
   {
-    id: "cid",
-    name: "creator ID",
+    id: "creator",
+    name: "creator",
   },
   {
-    id: "type",
-    name: "type",
+    id: "method",
+    name: "method",
   },
   {
     id: "status",
@@ -43,9 +47,13 @@ const Transactions = () => {
 
   useEffect(() => {
     if (trnxs) {
-      setMyTrnxs(trnxs.trnxs);
+      setMyTrnxs(trnxs.trnx);
     }
   }, [trnxs]);
+
+  if (getTransactionLoading) {
+    return <p className="mt-5">Getting transactions...</p>;
+  }
 
   return (
     <div>

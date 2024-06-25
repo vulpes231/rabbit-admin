@@ -8,6 +8,8 @@ import Transactions from "./Transactions";
 import Wallets from "./Wallets";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
+import Products from "./Products";
+import Orders from "./Orders";
 
 const Dashboard = () => {
   const [toggle, setToggle] = useState(false);
@@ -58,6 +60,10 @@ const Dashboard = () => {
             <Transactions />
           ) : activeLink === "wallet" ? (
             <Wallets />
+          ) : activeLink === "product" ? (
+            <Products />
+          ) : activeLink === "order" ? (
+            <Orders />
           ) : null}
         </div>
       </div>

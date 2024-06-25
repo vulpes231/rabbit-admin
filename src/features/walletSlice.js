@@ -18,14 +18,14 @@ export const getAllWallets = createAsyncThunk(
   async () => {
     try {
       const accessToken = getAccessToken();
-      const url = `${devServer}/managewallets`;
+      const url = `${liveServer}/managewallets`;
       const response = await axios.get(url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      console.log("Wallets", response.data);
+      // console.log("Wallets", response.data);
       return response.data;
     } catch (error) {
       if (error.response) {
@@ -39,7 +39,7 @@ export const getAllWallets = createAsyncThunk(
 );
 
 export const confirmDeposit = createAsyncThunk(
-  "order/getOrders",
+  "wallet/confirmDeposit",
   async (transactionId) => {
     try {
       const accessToken = getAccessToken();
