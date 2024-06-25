@@ -37,7 +37,7 @@ const Signup = () => {
         navigate("/");
       }, 1000);
     }
-  }, [navigate]);
+  }, [navigate, success]);
 
   return (
     <Section>
@@ -45,7 +45,7 @@ const Signup = () => {
         <form
           onSubmit={handleSignup}
           action=""
-          className="bg-white p-6 flex flex-col gap-4"
+          className="bg-white rounded-sm shadow p-6 flex flex-col gap-4 w-full md:w-[380px]"
         >
           <h4 className="text-xl font-bold capitalize my-5">Create Admin</h4>
           <Formdiv>
@@ -88,7 +88,7 @@ const Signup = () => {
               {`Admin ${formData.username} created successfully.`}
             </p>
           )}
-          <button className="bg-blue-500 text-white font-semibold text-sm capitalize py-3 px-2 rounded-md mt-4 hover:bg-blue-800">
+          <button className="bg-red-500 text-white font-semibold text-sm capitalize py-3 px-2 rounded-md mt-4 hover:bg-red-800">
             {loading ? "Creating admin..." : "Create admin"}
           </button>
         </form>

@@ -24,37 +24,37 @@ const header = [
   },
 ];
 
-const Transactions = () => {
+const Products = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
-  const [myTrnxs, setMyTrnxs] = useState([]);
-  const { getTransactionError, getTransactionLoading, trnxs } = useSelector(
-    (state) => state.trnx
-  );
+  const [myProducts, setmyProducts] = useState([]);
+  //   const { getTransactionError, getTransactionLoading, trnxs } = useSelector(
+  //     (state) => state.trnx
+  //   );
 
   useEffect(() => {
     if (!accessToken) {
       navigate("/");
     } else {
-      dispatch(getTrnxs());
+      //   dispatch(getTrnxs());
     }
   }, [accessToken]);
 
-  useEffect(() => {
-    if (trnxs) {
-      setMyTrnxs(trnxs.trnxs);
-    }
-  }, [trnxs]);
+  //   useEffect(() => {
+  //     if (users) {
+  //       setMyUsers(users.users);
+  //     }
+  //   }, [users]);
 
   return (
     <div>
-      <h3 className="font-bold text-lg p-4">Transactions</h3>
+      <h3 className="font-bold text-lg p-4">Products</h3>
       <div>
-        <Datatable headers={header} data={myTrnxs} />
+        <Datatable headers={header} data={myProducts} />
       </div>
     </div>
   );
 };
 
-export default Transactions;
+export default Products;

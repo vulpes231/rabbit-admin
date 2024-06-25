@@ -1,15 +1,17 @@
-const devServer = `http://localhost:3300`;
-const liveServer = `https://quadx.onrender.com`;
+const devServer = `http://localhost:4000`;
+const liveServer = `https://rabbit-server.onrender.com`;
 
 const links = [
   { id: "login", title: "Login", path: "/" },
-  { id: "signup", title: "Signup", path: "/create-admin" },
+  { id: "signup", title: "Signup", path: "/signup" },
 ];
 const authLinks = [
   { id: "dash", title: "Dashboard", path: "/dash" },
   { id: "user", title: "Users", path: "/users" },
   { id: "trnx", title: "Transactions", path: "/transactions" },
   { id: "wallet", title: "Wallets", path: "/wallets" },
+  { id: "order", title: "Orders", path: "/orders" },
+  { id: "product", title: "Products", path: "/products" },
 ];
 
 export { devServer, liveServer, links, authLinks };

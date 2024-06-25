@@ -3,7 +3,7 @@ import Datatable from "../components/Datatable";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
 import { useDispatch, useSelector } from "react-redux";
-import { getTrnxs } from "../features/trnxSlice";
+import { getOrders } from "../features/orderSlice";
 
 const header = [
   {
@@ -24,37 +24,37 @@ const header = [
   },
 ];
 
-const Transactions = () => {
+const Orders = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
-  const [myTrnxs, setMyTrnxs] = useState([]);
-  const { getTransactionError, getTransactionLoading, trnxs } = useSelector(
-    (state) => state.trnx
+  const [myOrders, setmyOrders] = useState([]);
+  const { orderError, orderLoading, orders } = useSelector(
+    (state) => state.order
   );
 
   useEffect(() => {
     if (!accessToken) {
       navigate("/");
     } else {
-      dispatch(getTrnxs());
+      dispatch(getOrders());
     }
   }, [accessToken]);
 
   useEffect(() => {
-    if (trnxs) {
-      setMyTrnxs(trnxs.trnxs);
+    if (users) {
+      setmyOrders(orders.orders);
     }
-  }, [trnxs]);
+  }, [orders]);
 
   return (
     <div>
-      <h3 className="font-bold text-lg p-4">Transactions</h3>
+      <h3 className="font-bold text-lg p-4">Orders</h3>
       <div>
-        <Datatable headers={header} data={myTrnxs} />
+        <Datatable headers={header} data={myOrders} />
       </div>
     </div>
   );
 };
 
-export default Transactions;
+export default Orders;

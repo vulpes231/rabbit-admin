@@ -20,7 +20,7 @@ const App = () => {
       {!token && <Navbar />}
       <Routes>
         <Route path="/" element={<Content />} />
-        <Route path="/create-admin" element={<Signup />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/dash" element={<Dashboard />} />
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/users" element={<Users />} />

@@ -12,7 +12,7 @@ export const signupAdmin = createAsyncThunk(
   "signup/signupAdmin",
   async (formData) => {
     try {
-      const url = `${liveServer}/create`;
+      const url = `${liveServer}/enroll`;
       const response = await axios.post(url, formData, {
         headers: {
           "Content-Type": "application/json",

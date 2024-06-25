@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Datatable from "../components/Datatable";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
-import { getWallet } from "../features/walletSlice";
+import { getAllWallets } from "../features/walletSlice";
 import { useDispatch } from "react-redux";
 
 const header = [
@@ -33,7 +33,7 @@ const Wallets = () => {
     if (!accessToken) {
       navigate("/");
     } else {
-      dispatch(getWallet());
+      dispatch(getAllWallets());
     }
   }, [accessToken]);
 

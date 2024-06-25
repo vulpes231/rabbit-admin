@@ -14,7 +14,7 @@ export const signinAdmin = createAsyncThunk(
   "signin/signinAdmin",
   async (formData) => {
     try {
-      const url = `${liveServer}/login`;
+      const url = `${devServer}/login`;
       const response = await axios.post(url, formData, {
         headers: {
           "Content-Type": "application/json",

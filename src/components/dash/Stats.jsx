@@ -7,12 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAccessToken } from "../../utils/utilities";
 import { getTrnxs } from "../../features/trnxSlice";
 import { getUsers } from "../../features/userSlice";
+import { FaDatabase } from "react-icons/fa6";
 
 const Stats = () => {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
   const { users } = useSelector((state) => state.user);
   const { trnxs } = useSelector((state) => state.trnx);
+  const { orders } = useSelector((state) => state.order);
+  const { wallets } = useSelector((state) => state.wallet);
 
   // console.log(users?.users?.length);
 
@@ -35,7 +38,16 @@ const Stats = () => {
         title={"transactions"}
         value={trnxs?.trnxs?.length ? trnxs.trnx.length : 0}
       />
-      <Box icon={<MdAdminPanelSettings />} title={"wallets"} value={0} />
+      <Box
+        icon={<MdAdminPanelSettings />}
+        title={"wallets"}
+        value={wallets?.wallets?.length ? wallets.wallets.length : 0}
+      />
+      <Box
+        icon={<FaDatabase />}
+        title={"orders"}
+        value={orders?.orders?.length ? orders.orders.length : 0}
+      />
     </div>
   );
 };

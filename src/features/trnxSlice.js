@@ -10,10 +10,10 @@ const initialState = {
   trnxs: [],
 };
 
-export const getTrnxs = createAsyncThunk("trnx/getTrnxs", async (formData) => {
+export const getTrnxs = createAsyncThunk("trnx/getTrnxs", async () => {
   try {
     const accessToken = getAccessToken();
-    const url = `${liveServer}/trnx`;
+    const url = `${liveServer}/managetrnxs`;
     const response = await axios.get(url, {
       headers: {
         "Content-Type": "application/json",
