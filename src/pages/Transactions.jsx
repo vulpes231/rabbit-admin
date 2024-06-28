@@ -37,6 +37,10 @@ const Transactions = () => {
     (state) => state.trnx
   );
 
+  const approveTrnx = (e) => {
+    e.preventDefault();
+  };
+
   useEffect(() => {
     if (!accessToken) {
       navigate("/");
@@ -59,7 +63,15 @@ const Transactions = () => {
     <div>
       <h3 className="font-bold text-lg p-4">Transactions</h3>
       <div>
-        <Datatable headers={header} data={myTrnxs} />
+        <Datatable
+          headers={header}
+          data={myTrnxs}
+          title={"Approve"}
+          handleClick={approveTrnx}
+          customClass={
+            "bg-green-600 text-white px-5 py-2 inline-flex rounded-md hover:bg-green-700"
+          }
+        />
       </div>
     </div>
   );

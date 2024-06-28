@@ -30,6 +30,10 @@ const Wallets = () => {
     (state) => state.wallet
   );
 
+  const banWallet = (e) => {
+    e.preventDefault();
+  };
+
   useEffect(() => {
     if (!accessToken) {
       navigate("/");
@@ -52,7 +56,15 @@ const Wallets = () => {
     <div>
       <h3 className="font-bold text-lg p-4">Wallets</h3>
       <div>
-        <Datatable headers={header} data={myWallets} />
+        <Datatable
+          headers={header}
+          data={myWallets}
+          title={"Suspend"}
+          handleClick={banWallet}
+          customClass={
+            "bg-yellow-500 text-white px-5 py-2 inline-flex rounded-md border border-yellow-500 hover:bg-yellow-700"
+          }
+        />
       </div>
     </div>
   );

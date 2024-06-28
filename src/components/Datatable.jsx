@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 
-const Datatable = ({ headers, data, itemsPerPage = 20 }) => {
+const Datatable = ({
+  headers,
+  data,
+  itemsPerPage = 20,
+  title,
+  handleClick,
+  customClass,
+  deleteBtn,
+  handleDelete,
+  cusClass,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -50,9 +60,20 @@ const Datatable = ({ headers, data, itemsPerPage = 20 }) => {
                 </td>
               ))}
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <button className="text-red-900 px-5 py-2 inline-flex rounded-md border border-red-500 ">
-                  Edit
-                </button>
+                <span className="flex items-center gap-2">
+                  <button
+                    onClick={() => handleClick(row)}
+                    className={customClass}
+                  >
+                    {title}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(row)}
+                    className={cusClass}
+                  >
+                    {deleteBtn}
+                  </button>
+                </span>
               </td>
             </tr>
           ))}
