@@ -43,10 +43,10 @@ export const confirmDeposit = createAsyncThunk(
   async (transactionId) => {
     try {
       const accessToken = getAccessToken();
-      const url = `${liveServer}/managewallets/${transactionId}`;
+      const url = `${devServer}/managewallets`;
       const response = await axios.put(
         url,
-        {},
+        { transactionId },
         {
           headers: {
             "Content-Type": "application/json",
