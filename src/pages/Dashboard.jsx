@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
 import Products from "./Products";
 import Orders from "./Orders";
+import Tickets from "./Tickets";
 
 const Dashboard = () => {
   const [toggle, setToggle] = useState(false);
@@ -26,10 +27,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (!accessToken) {
+    if (!accessToken || admin === null) {
       navigate("/");
     }
-  }, [accessToken]);
+  }, [accessToken, admin]);
 
   return (
     <section className="min-h-screen flex">
@@ -47,7 +48,7 @@ const Dashboard = () => {
           <Authnav toggle={toggle} handleToggle={handleToggle} />
           {activeLink === "dash" ? (
             <div className="mt-4 flex flex-col gap-4">
-              <p className="capitalize">Welcome {admin.username}</p>
+              <p className="capitalize">Welcome {admin?.username}</p>
               <div>
                 <>
                   <Stats />
@@ -64,6 +65,8 @@ const Dashboard = () => {
             <Products />
           ) : activeLink === "order" ? (
             <Orders />
+          ) : activeLink === "ticket" ? (
+            <Tickets />
           ) : null}
         </div>
       </div>

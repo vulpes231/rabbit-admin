@@ -8,10 +8,11 @@ import { getAccessToken } from "../../utils/utilities";
 import { getTrnxs } from "../../features/trnxSlice";
 import { getUsers } from "../../features/userSlice";
 import { FaDatabase } from "react-icons/fa6";
-import { AiFillShopping } from "react-icons/ai";
+import { AiFillCustomerService, AiFillShopping } from "react-icons/ai";
 import { getProducts } from "../../features/productSlice";
 import { getOrders } from "../../features/orderSlice";
 import { getAllWallets } from "../../features/walletSlice";
+import { getAllTickets } from "../../features/ticketSlice";
 
 const Stats = () => {
   const dispatch = useDispatch();
@@ -21,8 +22,9 @@ const Stats = () => {
   const { orders } = useSelector((state) => state.order);
   const { wallets } = useSelector((state) => state.wallet);
   const { products } = useSelector((state) => state.product);
+  const { tickets } = useSelector((state) => state.ticket);
 
-  // console.log(users?.users?.length);
+  // console.log(tickets);
 
   useEffect(() => {
     if (accessToken) {
@@ -31,6 +33,7 @@ const Stats = () => {
       dispatch(getAllWallets());
       dispatch(getProducts());
       dispatch(getOrders());
+      dispatch(getAllTickets());
     }
   }, [accessToken, dispatch]);
   return (
@@ -59,6 +62,12 @@ const Stats = () => {
         icon={<AiFillShopping />}
         title={"products"}
         value={products?.products?.length ? products.products.length : 0}
+      />
+      <Box
+        icon={<AiFillCustomerService />}
+        title={"tickets"}
+        value={tickets?.tickets?.length ? tickets.tickets.length : 0}
+        // value={0}
       />
     </div>
   );

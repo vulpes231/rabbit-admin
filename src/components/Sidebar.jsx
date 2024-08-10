@@ -1,7 +1,7 @@
 import React from "react";
 import { authLinks } from "../constants";
 import { MdAdminPanelSettings, MdHome, MdWallet } from "react-icons/md";
-import { AiFillShopping } from "react-icons/ai";
+import { AiFillShopping, AiTwotoneCustomerService } from "react-icons/ai";
 import { FaUserGroup } from "react-icons/fa6";
 import { FaExchangeAlt } from "react-icons/fa";
 import { SiHomeassistantcommunitystore } from "react-icons/si";
@@ -38,6 +38,8 @@ const Sidebar = ({ toggle, setActiveLink, activeLink }) => {
                   <SiHomeassistantcommunitystore />
                 ) : lnk.id === "order" ? (
                   <AiFillShopping />
+                ) : lnk.id === "ticket" ? (
+                  <AiTwotoneCustomerService />
                 ) : null}
               </button>
             </li>

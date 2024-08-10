@@ -3,21 +3,23 @@ import { Route, Routes } from "react-router-dom";
 import { Content, Navbar } from "./components";
 import { Dashboard, Signup, Transactions, Wallets, Users } from "./pages";
 import { getAccessToken } from "./utils/utilities";
+import Chat from "./pages/Chat";
 
 const App = () => {
-  const [token, setToken] = useState(false);
+  const [token, setToken] = useState(null);
   const accessToken = getAccessToken();
+
   useEffect(() => {
     if (accessToken) {
       setToken(accessToken);
     } else {
-      setToken(false);
+      setToken(null);
     }
   }, [accessToken]);
 
   return (
     <div>
-      {!token && !accessToken && <Navbar />}
+      {!token && <Navbar />}
       <Routes>
         <Route path="/" element={<Content />} />
         <Route path="/signup" element={<Signup />} />
@@ -25,6 +27,7 @@ const App = () => {
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/users" element={<Users />} />
         <Route path="/wallets" element={<Wallets />} />
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </div>
   );
