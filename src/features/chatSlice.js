@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getAccessToken } from "../utils/utilities";
-import { devServer } from "../constants";
+import { devServer, liveServer } from "../constants";
 
 const initialState = {
   getMessageLoading: false,
@@ -17,7 +17,7 @@ const initialState = {
 export const getChatByTicketId = createAsyncThunk(
   "chat/getChatByTicketId",
   async (ticketId) => {
-    const url = `${devServer}/chat/${ticketId}`;
+    const url = `${liveServer}/chat/${ticketId}`;
     const accessToken = getAccessToken();
 
     if (!accessToken) {
@@ -48,7 +48,7 @@ export const getChatByTicketId = createAsyncThunk(
 export const userSendMessage = createAsyncThunk(
   "chat/userSendMessage",
   async (formData) => {
-    const url = `${devServer}/chat`;
+    const url = `${liveServer}/chat`;
     const accessToken = getAccessToken();
 
     if (!accessToken) {

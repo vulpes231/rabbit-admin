@@ -5,8 +5,9 @@ import io from "socket.io-client";
 import { getTicketData } from "../features/ticketSlice";
 import { getChatByTicketId } from "../features/chatSlice";
 import { getAccessToken } from "../utils/utilities";
-import { devServer } from "../constants";
+import { devServer, liveServer } from "../constants";
 import { MdSend } from "react-icons/md";
+import { IoMdClose } from "react-icons/io";
 
 const initialState = {
   msg: "",
@@ -40,6 +41,10 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
+    document.title = "RH4OGS - LIVE CHAT";
+  });
+
+  useEffect(() => {
     if (!accessToken) {
       navigate("/");
       return;
@@ -56,7 +61,7 @@ const Chat = () => {
   }, [ticketData, dispatch]);
 
   useEffect(() => {
-    const socketConnection = io(devServer);
+    const socketConnection = io(liveServer);
     setSocket(socketConnection);
 
     socketConnection.on("newMessage", (message) => {
@@ -64,7 +69,7 @@ const Chat = () => {
     });
 
     return () => {
-      socketConnection.disconnect(); // Clean up on component unmount
+      socketConnection.disconnect();
     };
   }, [devServer, dispatch, chatId]);
 
@@ -111,39 +116,50 @@ const Chat = () => {
   };
 
   return (
-    <div className="absolute top-0 left-0 bg-slate-50 w-full h-screen flex justify-end">
-      <div className="flex flex-col gap-1 w-[60%]">
-        <ul className="p-6 flex flex-col gap-4 shadow-lg overflow-x-hidden overflow-y-auto h-[400px]">
-          {chatMessages?.messages?.map((msg) => (
-            <li
-              className="flex flex-col text-xs font-medium bg-green-100 p-3 w-full lg:w-[300px] rounded-sm"
-              key={msg._id}
-            >
+    <div className="fixed bottom-0 left-0 w-full h-full lg:w-[360px] lg:h-[600px] lg:bottom-4 lg:left-4 lg:right-auto lg:top-auto lg:relative bg-slate-50 shadow-lg border border-gray-200 rounded-lg flex flex-col">
+      <header className="bg-blue-500 text-white p-3 flex items-center justify-between lg:mt-10">
+        <h1 className="text-lg font-semibold">Live Chat</h1>
+        <button className="" onClick={() => navigate(-1)}>
+          <IoMdClose size={24} />
+        </button>
+      </header>
+      <ul className="flex flex-col gap-4 p-4 overflow-y-auto flex-grow">
+        {chatMessages?.messages?.map((msg) => (
+          <li
+            className={`flex flex-col text-xs font-medium p-3 rounded-sm mb-2 ${
+              msg.from === admin?.username
+                ? "bg-blue-200 text-end ml-auto w-[80%] items-end"
+                : "bg-green-200 text-start mr-auto w-[80%] items-start"
+            }`}
+            key={msg._id}
+          >
+            <span>
               <small className="font-thin text-slate-500">{msg.from}</small>
               <p className="text-md">{msg.msg}</p>
-            </li>
-          ))}
-          <div ref={messagesEndRef} />
-        </ul>
-        <form onSubmit={sendChatMessage} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1 relative">
-            <textarea
-              id="msg"
-              cols={10}
-              rows={1}
-              onChange={handleInput}
-              onKeyDown={handleKeyDown}
-              value={form.msg}
-              name="msg"
-              className="focus:border-2 focus:border-red-500 outline-none border p-2"
-              placeholder="Type your message here..."
-            />
-            <span className="absolute right-[10px] top-[13px]">
-              <MdSend />
             </span>
-          </div>
-        </form>
-      </div>
+          </li>
+        ))}
+        <div ref={messagesEndRef} />
+      </ul>
+      <form
+        onSubmit={sendChatMessage}
+        className="flex items-center border-t border-gray-300 p-4"
+      >
+        <textarea
+          id="msg"
+          cols={10}
+          rows={1}
+          onChange={handleInput}
+          onKeyDown={handleKeyDown}
+          value={form.msg}
+          name="msg"
+          className="flex-grow p-2 border border-gray-300 rounded-md focus:border-blue-500 outline-none"
+          placeholder="Type your message here..."
+        />
+        <button type="submit" className="ml-2 text-blue-500">
+          <MdSend size={24} />
+        </button>
+      </form>
     </div>
   );
 };

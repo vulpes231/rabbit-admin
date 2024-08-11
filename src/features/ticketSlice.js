@@ -16,7 +16,7 @@ export const getAllTickets = createAsyncThunk(
   "ticket/getAllTickets",
   async () => {
     try {
-      const url = `${devServer}/manageticket`;
+      const url = `${liveServer}/manageticket`;
       const accessToken = getAccessToken();
       const response = await axios.get(url, {
         headers: {
@@ -41,7 +41,7 @@ export const getTicketData = createAsyncThunk(
   "ticket/getTicketData",
   async (orderId, { rejectWithValue }) => {
     try {
-      const url = `${devServer}/ticket/${orderId}`;
+      const url = `${liveServer}/ticket/${orderId}`;
 
       const accessToken = getAccessToken();
 

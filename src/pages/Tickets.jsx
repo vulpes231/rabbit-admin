@@ -39,10 +39,6 @@ const Tickets = () => {
         console.log(`${action} action for ticket ${ticket._id}`);
         navigate(`/chat/?orderId=${ticket.orderId}`);
 
-        // Example: Dispatch an action if needed
-        // dispatch(someAction({ ticketId: ticket._id, action }));
-
-        // Clear the selected action after handling
         setSelectedAction(null);
       }
     }

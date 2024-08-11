@@ -95,7 +95,7 @@ export const deleteProduct = createAsyncThunk(
   async (FormData) => {
     try {
       const accessToken = getAccessToken();
-      const url = `${devServer}/manageproducts/delete/${FormData}`;
+      const url = `${liveServer}/manageproducts/delete/${FormData}`;
       const response = await axios.delete(url, {
         headers: {
           "Content-Type": "application/json",
