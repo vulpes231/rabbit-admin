@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { MdClose } from "react-icons/md";
 
 const Productmodal = ({ rowData, closeModal }) => {
-  // console.log(rowData);
-  const initialState = {};
+  const initialState = {
+    price: "",
+    name: "",
+    description: "",
+  };
+
   const [form, setForm] = useState(initialState);
 
   const handleChange = (e) => {

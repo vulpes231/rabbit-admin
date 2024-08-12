@@ -7,16 +7,20 @@ import { getOrders } from "../features/orderSlice";
 
 const header = [
   {
-    id: "amt",
-    name: "amount",
+    id: "item",
+    name: "item",
   },
   {
-    id: "cid",
-    name: "creator ID",
+    id: "_id",
+    name: "orderID",
   },
   {
-    id: "type",
-    name: "type",
+    id: "creator",
+    name: "OrderedBy",
+  },
+  {
+    id: "price",
+    name: "price",
   },
   {
     id: "status",
@@ -29,6 +33,7 @@ const Orders = () => {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
   const [myOrders, setmyOrders] = useState([]);
+
   const { orderError, orderLoading, orders } = useSelector(
     (state) => state.order
   );
@@ -41,6 +46,8 @@ const Orders = () => {
     }
   }, [accessToken]);
 
+  // console.log(orders);
+
   useEffect(() => {
     if (orders) {
       setmyOrders(orders.orders);
@@ -51,7 +58,14 @@ const Orders = () => {
     <div>
       <h3 className="font-bold text-lg p-4">Orders</h3>
       <div>
-        <Datatable headers={header} data={myOrders} />
+        <Datatable
+          headers={header}
+          data={myOrders}
+          title={"Edit"}
+          customClass={
+            "bg-green-600 text-white px-5 py-2 inline-flex rounded-md hover:bg-green-700"
+          }
+        />
       </div>
     </div>
   );

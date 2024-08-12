@@ -33,7 +33,7 @@ const Products = () => {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
   const [myProducts, setmyProducts] = useState([]);
-  const [rowData, setRowData] = useState(null);
+  const [rowData, setRowData] = useState(false);
   const [showProductModal, setShowProductModal] = useState(false);
   const [createProductModal, setCreateProductModal] = useState(false);
   const [deleteModal, setdeleteModal] = useState(false);
