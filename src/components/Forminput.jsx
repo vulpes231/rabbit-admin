@@ -9,7 +9,7 @@ const Forminput = ({ type, placeHolder, value, handleChange, name }) => {
       value={value}
       onChange={handleChange}
       name={name}
-      className="w-full border p-2 placeholder:text-sm placeholder:font-thin outline-blue-700"
+      className="w-full outline-none border-2 p-2 border-gray-300 placeholder:text-sm placeholder:font-thin focus:outline-red-500 focus:border-none"
     />
   );
 };

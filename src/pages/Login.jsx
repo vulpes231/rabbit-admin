@@ -88,6 +88,7 @@ const Login = () => {
               Login successful.
             </p>
           )}
+
           <button className="bg-red-500 text-white font-semibold text-sm capitalize py-3 px-2 rounded-md mt-4 hover:bg-red-800">
             {loading ? "logging in..." : "login"}
           </button>

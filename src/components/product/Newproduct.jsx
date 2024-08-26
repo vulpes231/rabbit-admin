@@ -68,7 +68,7 @@ const Productmodal = ({ closeModal }) => {
             <label htmlFor="">Category</label>
             <input
               type="text"
-              className="w-full border capitalize text-xs font-mono p-2"
+              className="w-full border text-xs font-mono p-2"
               value={form.category}
               onChange={handleChange}
               name="category"

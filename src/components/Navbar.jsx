@@ -11,9 +11,9 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full isolate top-0 bg-slate-200">
-      <nav className="p-6 flex justify-between items-center">
-        <h1 className="font-bold text-xl text-red-700">Rabbitlogs4ogs Admin</h1>
+    <header className="w-full isolate top-0 bg-white">
+      <nav className="p-4 flex justify-between items-center">
+        <h1 className="font-bold text-xl text-red-700">RH4OG Admin</h1>
         <div className="flex items-center gap-6">
           <ul className="hidden lg:flex items-center gap-4">
             {links.map((lnk) => {

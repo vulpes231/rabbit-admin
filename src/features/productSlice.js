@@ -65,6 +65,7 @@ export const createProduct = createAsyncThunk(
     }
   }
 );
+
 export const editProduct = createAsyncThunk(
   "product/editProduct",
   async (FormData) => {
