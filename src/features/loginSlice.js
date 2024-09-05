@@ -5,16 +5,16 @@ import { devServer, liveServer } from "../constants";
 const initialState = {
   loading: false,
   error: false,
-  accessToken: null,
+  accessToken: false,
   success: false,
-  admin: null,
+  admin: false,
 };
 
 export const signinAdmin = createAsyncThunk(
   "signin/signinAdmin",
   async (formData) => {
     try {
-      const url = `${liveServer}/login`;
+      const url = `${devServer}/login`;
       const response = await axios.post(url, formData, {
         headers: {
           "Content-Type": "application/json",
@@ -37,12 +37,12 @@ const loginAdminSlice = createSlice({
   name: "signin",
   initialState,
   reducers: {
-    reset(state) {
-      state.accessToken = null;
+    resetLogin(state) {
+      state.accessToken = false;
       state.loading = false;
       state.error = false;
       state.success = false;
-      state.admin = null;
+      state.admin = false;
     },
   },
   extraReducers: (builder) => {
@@ -67,5 +67,5 @@ const loginAdminSlice = createSlice({
   },
 });
 
-export const { reset } = loginAdminSlice.actions;
+export const { resetLogin } = loginAdminSlice.actions;
 export default loginAdminSlice.reducer;

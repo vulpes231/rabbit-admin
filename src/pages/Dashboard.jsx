@@ -1,25 +1,16 @@
 import React, { useEffect, useState } from "react";
-
 import Stats from "../components/dash/Stats";
-import Sidebar from "../components/Sidebar";
-import { useNavigate } from "react-router-dom";
-import { getAccessToken } from "../utils/utilities";
-import { MdLockClock } from "react-icons/md";
+import { MdLockClock, MdLogout } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 
-const Dashboard = ({ toggle }) => {
+const Dashboard = ({ handleLogout }) => {
   const [lastLogin, setLastLogin] = useState(null);
 
   const admin = JSON.parse(sessionStorage.getItem("admin"));
-  const navigate = useNavigate();
-  const accessToken = getAccessToken();
 
   useEffect(() => {
     document.title = "Admin - Dashboard";
-    if (!accessToken || admin === null) {
-      navigate("/");
-    }
-  }, [accessToken, admin]);
+  }, []);
 
   useEffect(() => {
     const currentDate = new Date().toLocaleString();
@@ -29,6 +20,15 @@ const Dashboard = ({ toggle }) => {
   return (
     <section>
       <div className="mt-4 flex flex-col gap-4">
+        <div className="flex justify-end">
+          <span
+            onClick={handleLogout}
+            className="flex items-center gap-1 text-xs font-medium hover:underline hover:text-red-500 cursor-pointer"
+          >
+            <MdLogout />
+            <>Logout</>
+          </span>
+        </div>
         <div className="flex justify-end">
           <p className="capitalize flex items-center font-bold text-lg gap-1">
             <span>

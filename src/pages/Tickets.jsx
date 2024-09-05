@@ -43,6 +43,9 @@ const Tickets = () => {
       }
     }
   }, [selectedAction, dispatch]);
+  useEffect(() => {
+    document.title = "Admin - TIckets";
+  }, []);
 
   return (
     <div className="">

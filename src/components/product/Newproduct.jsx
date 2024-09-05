@@ -7,7 +7,7 @@ import { getAccessToken } from "../../utils/utilities";
 const categories = [
   "resume",
   "sender",
-  "lead",
+  "leads",
   "rdp",
   "attachment",
   "social",
@@ -107,7 +107,7 @@ const Productmodal = ({ closeModal }) => {
 
   return (
     <div className="w-full h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-20">
-      <div className="p-6 bg-white shadow rounded-md">
+      <div className="p-6 bg-white shadow rounded-md lg:max-w-[600px] mx-auto">
         <div
           onClick={closeModal}
           className="flex justify-end items-center gap-2 underline cursor-pointer"
@@ -125,6 +125,7 @@ const Productmodal = ({ closeModal }) => {
               value={form.name}
               onChange={handleChange}
               name="name"
+              autoComplete="off"
             />
           </div>
 
@@ -157,6 +158,7 @@ const Productmodal = ({ closeModal }) => {
               onChange={handleChange}
               name="price"
               placeholder="$0.00"
+              autoComplete="off"
             />
           </div>
 
@@ -167,7 +169,8 @@ const Productmodal = ({ closeModal }) => {
                 id="description"
                 className="w-full border text-xs font-mono p-2"
                 onKeyDown={handleDescChange}
-                placeholder="e.g good, bad, fail"
+                placeholder="Enter description"
+                autoComplete="off"
               />
               <button
                 type="button"
@@ -185,8 +188,10 @@ const Productmodal = ({ closeModal }) => {
               </button>
             </div>
             <div className="p-2 flex flex-col gap-1 bg-slate-50 mt-2 text-xs font-thin">
-              {descriptions.length > 0
-                ? descriptions.join(", ")
+              {descriptions?.length > 0
+                ? descriptions?.map((des, index) => {
+                    return <span key={index}>{des}</span>;
+                  })
                 : "No descriptions"}
             </div>
           </div>
@@ -198,7 +203,8 @@ const Productmodal = ({ closeModal }) => {
                 id="feature"
                 className="w-full border text-xs font-mono p-2"
                 onKeyDown={handleFeatureChange}
-                placeholder="e.g good, bad, fail"
+                placeholder="Enter feature"
+                autoComplete="off"
               />
               <button
                 type="button"
@@ -216,7 +222,11 @@ const Productmodal = ({ closeModal }) => {
               </button>
             </div>
             <div className="p-2 flex flex-col gap-1 bg-slate-50 mt-2 text-xs font-thin">
-              {features.length > 0 ? features.join(", ") : "No features"}
+              {features?.length > 0
+                ? features?.map((ft, index) => {
+                    return <span key={index}>{ft}</span>;
+                  })
+                : "No features"}
             </div>
           </div>
 

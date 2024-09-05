@@ -85,6 +85,10 @@ const Products = () => {
     }
   }, [products]);
 
+  useEffect(() => {
+    document.title = "Admin - Products";
+  }, []);
+
   return (
     <div>
       <div className="flex justify-between items-center my-5">

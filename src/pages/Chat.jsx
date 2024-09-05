@@ -115,6 +115,10 @@ const Chat = () => {
     }
   };
 
+  useEffect(() => {
+    document.title = "RH4OGS - Live support";
+  }, []);
+
   return (
     <div className="fixed bottom-0 left-0 w-full h-full lg:w-[360px] lg:h-[600px] lg:bottom-4 lg:left-4 lg:right-auto lg:top-auto lg:relative bg-slate-50 shadow-lg border border-gray-200 rounded-lg flex flex-col">
       <header className="bg-blue-500 text-white p-3 flex items-center justify-between lg:mt-10">

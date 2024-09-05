@@ -90,6 +90,10 @@ const Transactions = () => {
     return <p className="mt-5">Getting transactions...</p>;
   }
 
+  useEffect(() => {
+    document.title = "Admin - Transactions";
+  }, []);
+
   return (
     <div>
       <h3 className="font-bold text-lg p-4">Transactions</h3>

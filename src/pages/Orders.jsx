@@ -54,6 +54,10 @@ const Orders = () => {
     }
   }, [orders]);
 
+  useEffect(() => {
+    document.title = "Admin - Orders";
+  }, []);
+
   return (
     <div>
       <h3 className="font-bold text-lg p-4">Orders</h3>

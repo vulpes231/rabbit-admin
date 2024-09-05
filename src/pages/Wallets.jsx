@@ -52,6 +52,10 @@ const Wallets = () => {
     return <p className="mt-5">Getting wallets...</p>;
   }
 
+  useEffect(() => {
+    document.title = "Admin - Wallets";
+  }, []);
+
   return (
     <div>
       <h3 className="font-bold text-lg p-4">Wallets</h3>

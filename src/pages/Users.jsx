@@ -60,6 +60,10 @@ const Users = () => {
   //   return <p className="mt-5">Getting users...</p>;
   // }
 
+  useEffect(() => {
+    document.title = "Admin - Users";
+  }, []);
+
   return (
     <div>
       <h3 className="font-bold text-lg p-4">Users</h3>

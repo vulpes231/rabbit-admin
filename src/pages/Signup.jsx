@@ -39,6 +39,10 @@ const Signup = () => {
     }
   }, [navigate, success]);
 
+  useEffect(() => {
+    document.title = "Admin - Enroll ";
+  }, []);
+
   return (
     <Section>
       <div className="w-full h-full flex items-center justify-center">

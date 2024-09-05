@@ -35,6 +35,10 @@ const Login = () => {
   };
 
   useEffect(() => {
+    document.title = "Admin - Login";
+  }, []);
+
+  useEffect(() => {
     if (accessToken && admin) {
       try {
         sessionStorage.setItem("accessToken", JSON.stringify(accessToken));
