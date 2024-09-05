@@ -24,6 +24,9 @@ const initialState = {
 };
 
 const Productmodal = ({ rowData, closeModal }) => {
+  console.log(rowData);
+
+  // console.log(typeof rowData?.description);
   const dispatch = useDispatch();
   const [form, setForm] = useState(initialState);
 
@@ -66,10 +69,11 @@ const Productmodal = ({ rowData, closeModal }) => {
         </div>
         <form className="flex flex-col gap-4 text-xs font-medium">
           <div>
-            <label htmlFor="">{rowData.name}</label>
+            <label htmlFor="">Product name</label>
             <input
               type="text"
               value={form.name}
+              placeholder={rowData?.name}
               onChange={handleChange}
               name="name"
               className="w-full border capitalize text-xs font-mono p-2"
@@ -94,36 +98,40 @@ const Productmodal = ({ rowData, closeModal }) => {
             </select>
           </div>
           <div>
-            <label htmlFor="">{rowData.price || "No price set"}</label>
+            <label htmlFor="">Price</label>
             <input
               type="text"
               value={form.price}
+              placeholder={rowData?.price}
               onChange={handleChange}
               name="price"
               className="w-full border capitalize text-xs font-mono p-2"
             />
           </div>
-          {rowData?.features.length ? (
+          {rowData?.description?.length ? (
             <div>
-              <label htmlFor="">Description</label>
-
-              <textarea
-                className="w-full border capitalize text-xs font-mono p-2"
-                readOnly
-                rows={8}
-                value={rowData?.description}
-              ></textarea>
+              <h3>Descriptions</h3>
+              {rowData?.description?.map((data, index) => {
+                return (
+                  <div key={index}>
+                    <input type="text" placeholder={data} />
+                    <button>add</button>
+                  </div>
+                );
+              })}
             </div>
           ) : null}
           {rowData?.features.length ? (
             <div>
-              <label htmlFor="">Features</label>
-              <textarea
-                className="w-full border capitalize text-xs font-mono p-2"
-                readOnly
-                rows={8}
-                value={rowData?.features ? rowData.features : "None"}
-              ></textarea>
+              <h3>Features</h3>
+              {rowData?.features?.map((data, index) => {
+                return (
+                  <div key={index}>
+                    <input type="text" placeholder={data} />
+                    <button>add</button>
+                  </div>
+                );
+              })}
             </div>
           ) : null}
           {editProductError && (

@@ -56,9 +56,9 @@ const Users = () => {
     }
   }, [users]);
 
-  if (getLoading) {
-    return <p className="mt-5">Getting users...</p>;
-  }
+  // if (getLoading) {
+  //   return <p className="mt-5">Getting users...</p>;
+  // }
 
   return (
     <div>

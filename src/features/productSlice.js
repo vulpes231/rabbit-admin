@@ -16,6 +16,12 @@ const initialState = {
   deleteProductLoading: false,
   deleteProductError: false,
   deleteProductSuccess: false,
+  addFeatLoading: false,
+  addFeatError: false,
+  addFeatSuccess: false,
+  addDescLoading: false,
+  addDescError: false,
+  addDescSuccess: false,
   products: [],
 };
 
@@ -46,7 +52,7 @@ export const createProduct = createAsyncThunk(
   async (FormData) => {
     try {
       const accessToken = getAccessToken();
-      const url = `${liveServer}/manageproducts/create`;
+      const url = `${devServer}/manageproducts/create`;
       const response = await axios.post(url, FormData, {
         headers: {
           "Content-Type": "application/json",
@@ -68,10 +74,10 @@ export const createProduct = createAsyncThunk(
 
 export const editProduct = createAsyncThunk(
   "product/editProduct",
-  async (FormData) => {
+  async ({ id, FormData }) => {
     try {
       const accessToken = getAccessToken();
-      const url = `${liveServer}/manageproducts/edit`;
+      const url = `${devServer}/manageproducts/edit/${id}`;
       const response = await axios.put(url, FormData, {
         headers: {
           "Content-Type": "application/json",
@@ -93,10 +99,10 @@ export const editProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
   "product/deleteProduct",
-  async (FormData) => {
+  async (id) => {
     try {
       const accessToken = getAccessToken();
-      const url = `${liveServer}/manageproducts/delete/${FormData}`;
+      const url = `${liveServer}/manageproducts/delete/${id}`;
       const response = await axios.delete(url, {
         headers: {
           "Content-Type": "application/json",
@@ -116,26 +122,92 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+export const addDescription = createAsyncThunk(
+  "product/addDescription",
+  async ({ id, formData }) => {
+    try {
+      const accessToken = getAccessToken();
+      const url = `${devServer}/manageproducts/addDescription/${id}`;
+      const response = await axios.put(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // console.log("Products", response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const errorMsg = error.response.data.message;
+        throw new Error(errorMsg);
+      } else {
+        throw error;
+      }
+    }
+  }
+);
+export const addFeature = createAsyncThunk(
+  "product/addFeature",
+  async (formData) => {
+    try {
+      const accessToken = getAccessToken();
+      const url = `${devServer}/manageproducts/addFeature/${id}`;
+      const response = await axios.put(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // console.log("Products", response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const errorMsg = error.response.data.message;
+        throw new Error(errorMsg);
+      } else {
+        throw error;
+      }
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    reset(state) {
+    resetGetProduct(state) {
       state.getProductLoading = false;
       state.getProductError = false;
       state.getProductSuccess = false;
+      state.products = [];
+    },
+    resetCreateProduct(state) {
       state.createProductLoading = false;
       state.createProductError = false;
       state.createProductSuccess = false;
+    },
+    resetEditProduct(state) {
       state.editProductLoading = false;
       state.editProductError = false;
       state.editProductSuccess = false;
+    },
+    resetDeleteProduct(state) {
       state.deleteProductLoading = false;
       state.deleteProductError = false;
       state.deleteProductSuccess = false;
-      state.products = [];
+    },
+    resetAddFeat(state) {
+      state.addFeatLoading = false;
+      state.addFeatError = false;
+      state.addFeatSuccess = false;
+    },
+    resetAddDesc(state) {
+      state.addDescLoading = false;
+      state.addDescError = false;
+      state.addDescSuccess = false;
     },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(getProducts.pending, (state) => {
@@ -168,6 +240,7 @@ const productSlice = createSlice({
         state.createProductError = action.error.message;
         state.createProductSuccess = false;
       });
+
     builder
       .addCase(editProduct.pending, (state) => {
         state.editProductLoading = true;
@@ -182,6 +255,7 @@ const productSlice = createSlice({
         state.editProductError = action.error.message;
         state.editProductSuccess = false;
       });
+
     builder
       .addCase(deleteProduct.pending, (state) => {
         state.deleteProductLoading = true;
@@ -195,6 +269,34 @@ const productSlice = createSlice({
         state.deleteProductLoading = false;
         state.deleteProductError = action.error.message;
         state.deleteProductSuccess = false;
+      });
+    builder
+      .addCase(addDescription.pending, (state) => {
+        state.addDescLoading = true;
+      })
+      .addCase(addDescription.fulfilled, (state) => {
+        state.addDescLoading = false;
+        state.addDescError = false;
+        state.addDescSuccess = true;
+      })
+      .addCase(addDescription.rejected, (state, action) => {
+        state.addDescLoading = false;
+        state.addDescError = action.error.message;
+        state.addDescSuccess = false;
+      });
+    builder
+      .addCase(addFeature.pending, (state) => {
+        state.addFeatLoading = true;
+      })
+      .addCase(addFeature.fulfilled, (state) => {
+        state.addFeatLoading = false;
+        state.addFeatError = false;
+        state.addFeatSuccess = true;
+      })
+      .addCase(addFeature.rejected, (state, action) => {
+        state.addFeatLoading = false;
+        state.addFeatError = action.error.message;
+        state.addFeatSuccess = false;
       });
   },
 });

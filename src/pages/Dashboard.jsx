@@ -1,73 +1,52 @@
 import React, { useEffect, useState } from "react";
 
 import Stats from "../components/dash/Stats";
-import { Authnav } from "../components";
 import Sidebar from "../components/Sidebar";
-import Users from "./Users";
-import Transactions from "./Transactions";
-import Wallets from "./Wallets";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
-import Products from "./Products";
-import Orders from "./Orders";
-import Tickets from "./Tickets";
+import { MdLockClock } from "react-icons/md";
+import { FaUserCircle } from "react-icons/fa";
 
-const Dashboard = () => {
-  const [toggle, setToggle] = useState(false);
-  const [activeLink, setActiveLink] = useState("dash");
+const Dashboard = ({ toggle }) => {
+  const [lastLogin, setLastLogin] = useState(null);
 
   const admin = JSON.parse(sessionStorage.getItem("admin"));
-  // console.log(admin.username);
-
   const navigate = useNavigate();
   const accessToken = getAccessToken();
 
-  const handleToggle = () => {
-    setToggle((prev) => !prev);
-  };
-
   useEffect(() => {
+    document.title = "Admin - Dashboard";
     if (!accessToken || admin === null) {
       navigate("/");
     }
   }, [accessToken, admin]);
 
+  useEffect(() => {
+    const currentDate = new Date().toLocaleString();
+    setLastLogin(currentDate);
+  }, []);
+
   return (
-    <section className="min-h-screen flex">
-      <Sidebar
-        toggle={toggle}
-        setActiveLink={setActiveLink}
-        activeLink={activeLink}
-      />
-      <div
-        className={`flex-1 ${
-          toggle ? "w-[calc(100% - 250px)]" : "w-full"
-        } bg-slate-50`}
-      >
-        <div className="p-6">
-          <Authnav toggle={toggle} handleToggle={handleToggle} />
-          {activeLink === "dash" ? (
-            <div className="mt-4 flex flex-col gap-4">
-              <p className="capitalize">Welcome {admin?.username}</p>
-              <div>
-                <>
-                  <Stats />
-                </>
-              </div>
-            </div>
-          ) : activeLink === "user" ? (
-            <Users />
-          ) : activeLink === "trnx" ? (
-            <Transactions />
-          ) : activeLink === "wallet" ? (
-            <Wallets />
-          ) : activeLink === "product" ? (
-            <Products />
-          ) : activeLink === "order" ? (
-            <Orders />
-          ) : activeLink === "ticket" ? (
-            <Tickets />
-          ) : null}
+    <section>
+      <div className="mt-4 flex flex-col gap-4">
+        <div className="flex justify-end">
+          <p className="capitalize flex items-center font-bold text-lg gap-1">
+            <span>
+              <FaUserCircle />{" "}
+            </span>{" "}
+            Welcome {admin?.username}
+          </p>
+        </div>
+        <div className="flex justify-end items-center gap-1 text-xs font-thin capitalize">
+          <span>
+            <MdLockClock />
+          </span>
+          <span>last login: {lastLogin}</span>
+        </div>
+        <div>
+          <>
+            <Stats />
+          </>
         </div>
       </div>
     </section>

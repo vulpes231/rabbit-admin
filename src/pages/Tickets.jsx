@@ -45,14 +45,14 @@ const Tickets = () => {
   }, [selectedAction, dispatch]);
 
   return (
-    <div className="p-6 text-xs font-medium">
-      <h3>Tickets</h3>
-      <table className="min-w-full divide-gray-50 bg-white shadow-xl">
-        <thead className="bg-slate-200">
+    <div className="">
+      <h3 className="font-bold text-lg p-4">Tickets</h3>
+      <table className="min-w-full bg-white divide-y-2 shadow-xl">
+        <thead className="bg-red-500">
           <tr>
             {headers.map((header) => (
               <th
-                className="px-6 py-2 text-left font-medium capitalize"
+                className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
                 key={header.id}
               >
                 {header.name}

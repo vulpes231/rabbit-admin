@@ -32,23 +32,23 @@ const Datatable = ({
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border-gray-200 shadow-md rounded">
-        <thead className="bg-gray-100">
-          <tr>
+      <table className="min-w-full bg-white divide-y-2 shadow-xl">
+        <thead className="">
+          <tr className="bg-red-500">
             {headers?.map((hdr, index) => (
               <th
                 key={index}
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
               >
                 {hdr.name}
               </th>
             ))}
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
               Actions
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200">
+        <tbody className="divide-y divide-gray-200 ">
           {paginatedData?.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {headers.map((hdr, colIndex) => (
@@ -79,9 +79,9 @@ const Datatable = ({
           ))}
         </tbody>
         <tfoot>
-          <tr>
+          <tr className=" ">
             <td colSpan={headers.length + 1} className="px-6 py-4">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center ">
                 <div>
                   Page {currentPage} of {totalPages}
                 </div>
@@ -89,14 +89,14 @@ const Datatable = ({
                   <button
                     onClick={prevPage}
                     disabled={currentPage === 1}
-                    className="px-3 py-1 mx-1 bg-gray-200 rounded"
+                    className="px-3 py-1 mx-1 bg-red-500 text-white rounded"
                   >
                     Prev
                   </button>
                   <button
                     onClick={nextPage}
                     disabled={currentPage === totalPages}
-                    className="px-3 py-1 mx-1 bg-gray-200 rounded"
+                    className="px-3 py-1 mx-1 bg-red-500 text-white rounded"
                   >
                     Next
                   </button>

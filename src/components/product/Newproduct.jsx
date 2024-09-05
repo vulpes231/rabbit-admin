@@ -1,7 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { createProduct } from "../../features/productSlice";
+import { createProduct, getProducts } from "../../features/productSlice";
+import { getAccessToken } from "../../utils/utilities";
+
+const categories = [
+  "resume",
+  "sender",
+  "lead",
+  "rdp",
+  "attachment",
+  "social",
+  "office",
+  "smtp",
+  "financial",
+  "drainer",
+  "video",
+  "redirect",
+  "malware",
+  "cookie",
+  "extractor",
+  "bank",
+  "developer",
+  "paid",
+  "updated",
+];
 
 const Productmodal = ({ closeModal }) => {
   const dispatch = useDispatch();
@@ -9,15 +32,21 @@ const Productmodal = ({ closeModal }) => {
   const initialState = {
     name: "",
     category: "",
-    features: "",
-    description: "",
     price: "",
   };
 
   const [form, setForm] = useState(initialState);
+  const [descriptions, setDescriptions] = useState([]);
+  const [features, setFeatures] = useState([]);
 
-  const { createProductLoading, createProductError, createProductSuccess } =
-    useSelector((state) => state.product);
+  const accessToken = getAccessToken();
+
+  const {
+    createProductLoading,
+    createProductError,
+    createProductSuccess,
+    products,
+  } = useSelector((state) => state.product);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,10 +56,38 @@ const Productmodal = ({ closeModal }) => {
     }));
   };
 
+  const handleFeatureChange = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const feature = e.target.value;
+      if (feature && !features.includes(feature)) {
+        setFeatures((prev) => [...prev, feature]);
+        e.target.value = ""; // clear input after adding
+      }
+    }
+  };
+
+  const handleDescChange = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const description = e.target.value;
+      if (description && !descriptions.includes(description)) {
+        setDescriptions((prev) => [...prev, description]);
+        e.target.value = ""; // clear input after adding
+      }
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
-    dispatch(createProduct(form));
+    const data = {
+      name: form.name,
+      price: form.price,
+      category: form.category,
+      features: features,
+      descriptions: descriptions,
+    };
+    dispatch(createProduct(data));
   };
 
   useEffect(() => {
@@ -42,6 +99,12 @@ const Productmodal = ({ closeModal }) => {
     }
   }, [createProductSuccess, closeModal]);
 
+  useEffect(() => {
+    if (accessToken) {
+      dispatch(getProducts());
+    }
+  }, [accessToken]);
+
   return (
     <div className="w-full h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-20">
       <div className="p-6 bg-white shadow rounded-md">
@@ -49,15 +112,16 @@ const Productmodal = ({ closeModal }) => {
           onClick={closeModal}
           className="flex justify-end items-center gap-2 underline cursor-pointer"
         >
-          <small>close</small>
+          <small>Close</small>
           <MdClose />
         </div>
-        <form action="" className="flex flex-col gap-4 text-xs font-medium">
+        <form className="flex flex-col gap-4 text-xs font-medium">
           <div>
-            <label htmlFor="">ProductName</label>
+            <label htmlFor="productName">Product Name</label>
             <input
               type="text"
-              className="w-full border capitalize text-xs font-mono p-2"
+              id="productName"
+              className="w-full border text-xs font-mono p-2"
               value={form.name}
               onChange={handleChange}
               name="name"
@@ -65,21 +129,30 @@ const Productmodal = ({ closeModal }) => {
           </div>
 
           <div>
-            <label htmlFor="">Category</label>
-            <input
-              type="text"
+            <label htmlFor="category">Category</label>
+            <select
               className="w-full border text-xs font-mono p-2"
               value={form.category}
               onChange={handleChange}
               name="category"
-            />
+            >
+              <option value="">choose category</option>
+              {categories.map((cat, index) => {
+                return (
+                  <option value={cat} key={index}>
+                    {cat}
+                  </option>
+                );
+              })}
+            </select>
           </div>
 
           <div>
-            <label htmlFor="">Price</label>
+            <label htmlFor="price">Price</label>
             <input
               type="text"
-              className="w-full border capitalize text-xs font-mono p-2"
+              id="price"
+              className="w-full border text-xs font-mono p-2"
               value={form.price}
               onChange={handleChange}
               name="price"
@@ -88,28 +161,65 @@ const Productmodal = ({ closeModal }) => {
           </div>
 
           <div>
-            <label htmlFor="">Description</label>
-            <textarea
-              className="w-full border capitalize text-xs font-mono p-2"
-              rows={8}
-              value={form.description}
-              onChange={handleChange}
-              name="description"
-              placeholder="e.g good, bad, fail"
-            ></textarea>
+            <label htmlFor="description">Description</label>
+            <div className="flex items-center gap-2">
+              <input
+                id="description"
+                className="w-full border text-xs font-mono p-2"
+                onKeyDown={handleDescChange}
+                placeholder="e.g good, bad, fail"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const descInput = document.getElementById("description");
+                  const description = descInput.value;
+                  if (description && !descriptions.includes(description)) {
+                    setDescriptions((prev) => [...prev, description]);
+                    descInput.value = ""; // clear input after adding
+                  }
+                }}
+                className="bg-red-500 text-white rounded-sm py-2 px-5"
+              >
+                Add
+              </button>
+            </div>
+            <div className="p-2 flex flex-col gap-1 bg-slate-50 mt-2 text-xs font-thin">
+              {descriptions.length > 0
+                ? descriptions.join(", ")
+                : "No descriptions"}
+            </div>
           </div>
 
           <div>
-            <label htmlFor="">Features</label>
-            <textarea
-              className="w-full border capitalize text-xs font-mono p-2"
-              rows={8}
-              value={form.features}
-              onChange={handleChange}
-              name="features"
-              placeholder="e.g good, bad, fail"
-            ></textarea>
+            <label htmlFor="feature">Features</label>
+            <div className="flex items-center gap-2">
+              <input
+                id="feature"
+                className="w-full border text-xs font-mono p-2"
+                onKeyDown={handleFeatureChange}
+                placeholder="e.g good, bad, fail"
+              />
+              <button
+                type="button"
+                onClick={() => {
+                  const featureInput = document.getElementById("feature");
+                  const feature = featureInput.value;
+                  if (feature && !features.includes(feature)) {
+                    setFeatures((prev) => [...prev, feature]);
+                    featureInput.value = ""; // clear input after adding
+                  }
+                }}
+                className="bg-red-500 text-white rounded-sm py-2 px-5"
+              >
+                Add
+              </button>
+            </div>
+            <div className="p-2 flex flex-col gap-1 bg-slate-50 mt-2 text-xs font-thin">
+              {features.length > 0 ? features.join(", ") : "No features"}
+            </div>
           </div>
+
           {createProductError && (
             <p className="text-red-500 bg-red-600 bg-opacity-20 p-2 rounded-md">
               {createProductError}
