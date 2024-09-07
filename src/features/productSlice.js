@@ -52,7 +52,7 @@ export const createProduct = createAsyncThunk(
   async (FormData) => {
     try {
       const accessToken = getAccessToken();
-      const url = `${devServer}/manageproducts/create`;
+      const url = `${liveServer}/manageproducts/create`;
       const response = await axios.post(url, FormData, {
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export const editProduct = createAsyncThunk(
   async ({ id, FormData }) => {
     try {
       const accessToken = getAccessToken();
-      const url = `${devServer}/manageproducts/edit/${id}`;
+      const url = `${liveServer}/manageproducts/edit/${id}`;
       const response = await axios.put(url, FormData, {
         headers: {
           "Content-Type": "application/json",
@@ -127,7 +127,7 @@ export const addDescription = createAsyncThunk(
   async ({ id, formData }) => {
     try {
       const accessToken = getAccessToken();
-      const url = `${devServer}/manageproducts/addDescription/${id}`;
+      const url = `${liveServer}/manageproducts/addDescription/${id}`;
       const response = await axios.put(url, formData, {
         headers: {
           "Content-Type": "application/json",
@@ -146,12 +146,13 @@ export const addDescription = createAsyncThunk(
     }
   }
 );
+
 export const addFeature = createAsyncThunk(
   "product/addFeature",
   async (formData) => {
     try {
       const accessToken = getAccessToken();
-      const url = `${devServer}/manageproducts/addFeature/${id}`;
+      const url = `${liveServer}/manageproducts/addFeature/${id}`;
       const response = await axios.put(url, formData, {
         headers: {
           "Content-Type": "application/json",

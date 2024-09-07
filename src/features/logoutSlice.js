@@ -1,5 +1,5 @@
 import axios from "axios";
-import { devServer } from "../constants";
+import { devServer, liveServer } from "../constants";
 import { getAccessToken } from "../utils/utilities";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export const logoutAdmin = createAsyncThunk("logout/logoutAdmin", async () => {
-  const url = `${devServer}/managelogout`;
+  const url = `${liveServer}/managelogout`;
   const accessToken = getAccessToken();
   try {
     const response = await axios.put(

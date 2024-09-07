@@ -24,6 +24,8 @@ const categories = [
   "developer",
   "paid",
   "updated",
+  "2fa",
+  "class",
 ];
 
 const Productmodal = ({ closeModal }) => {
@@ -62,7 +64,7 @@ const Productmodal = ({ closeModal }) => {
       const feature = e.target.value;
       if (feature && !features.includes(feature)) {
         setFeatures((prev) => [...prev, feature]);
-        e.target.value = ""; // clear input after adding
+        e.target.value = "";
       }
     }
   };

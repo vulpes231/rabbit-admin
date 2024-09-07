@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const Datatable = ({
   headers,
   data,
-  itemsPerPage = 20,
+  itemsPerPage = 8,
   title,
   handleClick,
   customClass,
