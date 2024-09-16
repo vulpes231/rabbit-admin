@@ -33,10 +33,17 @@ const Orders = () => {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
   const [myOrders, setmyOrders] = useState([]);
+  const [rowData, setRowData] = useState(false);
 
   const { orderError, orderLoading, orders } = useSelector(
     (state) => state.order
   );
+
+  const goToComplete = (row) => {
+    setRowData(row);
+    const id = row._id;
+    navigate(`/complete/${id}`);
+  };
 
   useEffect(() => {
     if (!accessToken) {
@@ -45,8 +52,6 @@ const Orders = () => {
       dispatch(getOrders());
     }
   }, [accessToken]);
-
-  // console.log(orders);
 
   useEffect(() => {
     if (orders) {
@@ -69,6 +74,7 @@ const Orders = () => {
           customClass={
             "bg-green-600 text-white px-5 py-2 inline-flex rounded-md hover:bg-green-700"
           }
+          handleClick={goToComplete}
         />
       </div>
     </div>

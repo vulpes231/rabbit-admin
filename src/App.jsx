@@ -17,6 +17,7 @@ import Sidebar from "./components/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutAdmin, resetLogout } from "./features/logoutSlice";
 import { resetLogin } from "./features/loginSlice";
+import Completeorder from "./pages/Completeorder";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -95,6 +96,7 @@ const App = () => {
             <Route path="/products" element={<Products />} />
             <Route path="/tickets" element={<Tickets />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/complete/:id" element={<Completeorder />} />
           </Routes>
         </div>
         {logoutLoading && (

@@ -74,11 +74,13 @@ export const createProduct = createAsyncThunk(
 
 export const editProduct = createAsyncThunk(
   "product/editProduct",
-  async ({ id, FormData }) => {
+  async ({ id, formData }) => {
+    console.log(id);
+    console.log(formData);
     try {
       const accessToken = getAccessToken();
-      const url = `${liveServer}/manageproducts/edit/${id}`;
-      const response = await axios.put(url, FormData, {
+      const url = `${devServer}/manageproducts/edit/${id}`;
+      const response = await axios.put(url, formData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
@@ -302,5 +304,6 @@ const productSlice = createSlice({
   },
 });
 
-export const { reset } = productSlice.actions;
+export const { reset, resetEditProduct, resetDeleteProduct } =
+  productSlice.actions;
 export default productSlice.reducer;

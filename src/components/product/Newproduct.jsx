@@ -25,7 +25,7 @@ const categories = [
   "paid",
   "updated",
   "2fa",
-  "class",
+  "tutorial",
 ];
 
 const Productmodal = ({ closeModal }) => {

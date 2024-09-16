@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { deleteProduct } from "../../features/productSlice";
+import { deleteProduct, resetDeleteProduct } from "../../features/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Deletemodal = ({ closeModal, id }) => {
@@ -14,13 +14,17 @@ const Deletemodal = ({ closeModal, id }) => {
   };
 
   useEffect(() => {
+    let timeout;
     if (deleteProductSuccess) {
       setTimeout(() => {
-        closeModal();
+        timeout = 4000;
+        // closeModal();
+        dispatch(resetDeleteProduct());
         window.location.reload();
-      }, 2000);
+      }, timeout);
     }
-  }, []);
+    return () => clearTimeout(timeout);
+  }, [deleteProductSuccess]);
   return (
     <div className="fixed top-0 right-0 p-6 bg-white shadow rounded-md flex flex-col gap-2">
       <p>Are you sure you want to delete?</p>

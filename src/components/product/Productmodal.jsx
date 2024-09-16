@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { MdClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { editProduct } from "../../features/productSlice";
+import { editProduct, resetEditProduct } from "../../features/productSlice";
 
 const categories = [
   "resume",
   "sender",
   "leads",
+  "tutorial",
   "rdp",
   "attachment",
   "social",
@@ -29,20 +30,23 @@ const categories = [
 
 const ProductModal = ({ rowData, closeModal }) => {
   const dispatch = useDispatch();
+
   const [form, setForm] = useState({
     price: rowData?.price || "",
     name: rowData?.name || "",
-    category: rowData?.category || "",
   });
-  const [descriptions, setDescriptions] = useState(rowData?.descriptions || []);
-  const [features, setFeatures] = useState(rowData?.features || []);
+  const [descriptions, setDescriptions] = useState([]);
+  const [features, setFeatures] = useState([]);
 
   const { editProductLoading, editProductError, editProductSuccess } =
     useSelector((state) => state.product);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleFeatureChange = (e) => {
@@ -74,14 +78,16 @@ const ProductModal = ({ rowData, closeModal }) => {
       descriptions: Array.isArray(descriptions) ? descriptions : [],
       features: Array.isArray(features) ? features : [],
     };
-    dispatch(editProduct(updatedProduct));
+    const id = rowData._id;
+    dispatch(editProduct({ id, formData: updatedProduct }));
   };
 
   useEffect(() => {
     if (editProductSuccess) {
       const timeout = setTimeout(() => {
-        closeModal(); // Close the modal instead of reloading the page
-      }, 2000);
+        window.location.reload();
+        dispatch(resetEditProduct());
+      }, 6000);
       return () => clearTimeout(timeout);
     }
   }, [editProductSuccess, closeModal]);
@@ -114,19 +120,8 @@ const ProductModal = ({ rowData, closeModal }) => {
           </div>
           <div>
             <label htmlFor="category">Category</label>
-            <select
-              id="category"
-              name="category"
-              value={form.category}
-              onChange={handleChange}
-              className="w-full border capitalize text-xs font-mono p-2 bg-transparent"
-            >
-              <option value="">Choose category</option>
-              {categories.map((cat, index) => (
-                <option value={cat} key={index}>
-                  {cat}
-                </option>
-              ))}
+            <select className="w-full border capitalize text-xs font-mono p-2 bg-transparent">
+              <option value="">{rowData?.category}</option>
             </select>
           </div>
           <div>
