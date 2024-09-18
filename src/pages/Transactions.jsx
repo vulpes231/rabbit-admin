@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
 import { useDispatch, useSelector } from "react-redux";
 import { getTrnxs } from "../features/trnxSlice";
-import { confirmDeposit } from "../features/walletSlice";
+import { confirmDeposit, resetConfirmTrnx } from "../features/walletSlice";
 
 const header = [
   {
@@ -81,10 +81,24 @@ const Transactions = () => {
       timeout = 3000;
       setTimeout(() => {
         setConfirmModal(false);
+        dispatch(resetConfirmTrnx());
+        window.location.reload();
       }, timeout);
     }
     return () => clearTimeout(timeout);
   }, [confirmDepositSuccess]);
+
+  useEffect(() => {
+    let timeout;
+    if (confirmDepositError) {
+      timeout = 3000;
+      setTimeout(() => {
+        setConfirmModal(false);
+        dispatch(resetConfirmTrnx());
+      }, timeout);
+    }
+    return () => clearTimeout(timeout);
+  }, [confirmDepositError]);
 
   if (getTransactionLoading) {
     return <p className="mt-5">Getting transactions...</p>;
@@ -125,7 +139,7 @@ const Transactions = () => {
               disabled={status === "completed"}
               className="py-2 px-5 rounded-lg inline-flex bg-green-500 capitalize hover:bg-green-600 font-medium text-xs text-white"
             >
-              yes
+              {!confirmDepositLoading ? "yes" : "wait..."}
             </button>
             <button
               onClick={closeModal}

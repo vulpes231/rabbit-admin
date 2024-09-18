@@ -19,6 +19,14 @@ const header = [
     name: "OrderedBy",
   },
   {
+    id: "customerEmail",
+    name: "email",
+  },
+  {
+    id: "customerName",
+    name: "username",
+  },
+  {
     id: "price",
     name: "price",
   },

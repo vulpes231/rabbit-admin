@@ -40,20 +40,16 @@ export const getAllWallets = createAsyncThunk(
 
 export const confirmDeposit = createAsyncThunk(
   "wallet/confirmDeposit",
-  async (transactionId) => {
+  async (formData) => {
     try {
       const accessToken = getAccessToken();
-      const url = `${liveServer}/managewallets`;
-      const response = await axios.put(
-        url,
-        { transactionId },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
+      const url = `${liveServer}/managetrnxs`;
+      const response = await axios.put(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       console.log("Trnx", response.data);
       return response.data;
     } catch (error) {
@@ -76,6 +72,11 @@ const walletSlice = createSlice({
       state.getAllWalletsError = false;
       state.getWalletSuccess = false;
       state.wallets = [];
+    },
+    resetConfirmTrnx(state) {
+      state.confirmDepositLoading = false;
+      state.confirmDepositError = false;
+      state.confirmDepositSuccess = false;
     },
   },
   extraReducers: (builder) => {
@@ -111,5 +112,5 @@ const walletSlice = createSlice({
   },
 });
 
-export const { reset } = walletSlice.actions;
+export const { reset, resetConfirmTrnx } = walletSlice.actions;
 export default walletSlice.reducer;

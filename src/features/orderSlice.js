@@ -11,52 +11,51 @@ const initialState = {
   confirmOrderError: false,
   confirmOrderSuccess: false,
   orders: [],
+  singleOrderLoading: false,
+  singleOrderError: false,
+  order: false,
 };
 
 export const getOrders = createAsyncThunk("order/getOrders", async () => {
-  try {
+  const accessToken = getAccessToken();
+  const url = `${liveServer}/manageorders`;
+  const response = await axios.get(url, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  return response.data;
+});
+
+export const confirmOrder = createAsyncThunk(
+  "order/confirmOrder",
+  async ({ orderId, formData }) => {
     const accessToken = getAccessToken();
-    const url = `${liveServer}/manageorders`;
+    const url = `${liveServer}/manageorders/${orderId}`;
+    const response = await axios.post(url, formData, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  }
+);
+
+export const getSingleOrder = createAsyncThunk(
+  "order/getSingleOrder",
+  async (orderId) => {
+    // console.log(orderId);
+    const accessToken = getAccessToken();
+    const url = `${liveServer}/manageorders/${orderId}`;
     const response = await axios.get(url, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    // console.log("Trnx", response.data);
     return response.data;
-  } catch (error) {
-    if (error.response) {
-      const errorMsg = error.response.data.message;
-      throw new Error(errorMsg);
-    } else {
-      throw error;
-    }
-  }
-});
-
-export const confirmOrder = createAsyncThunk(
-  "order/confirmOrder",
-  async (FormData) => {
-    try {
-      const accessToken = getAccessToken();
-      const url = `${liveServer}/manageorders`;
-      const response = await axios.put(url, FormData, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      // console.log("Trnx", response.data);
-      return response.data;
-    } catch (error) {
-      if (error.response) {
-        const errorMsg = error.response.data.message;
-        throw new Error(errorMsg);
-      } else {
-        throw error;
-      }
-    }
   }
 );
 
@@ -64,14 +63,22 @@ const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-    reset(state) {
+    resetGetOrder(state) {
       state.getOrderLoading = false;
       state.getOrderError = false;
       state.getOrderSuccess = false;
+
+      state.orders = [];
+    },
+    resetConfirm(state) {
       state.confirmOrderLoading = false;
       state.confirmOrderError = false;
       state.confirmOrderSuccess = false;
-      state.orders = [];
+    },
+    resetSingleOrder(state) {
+      state.singleOrderLoading = false;
+      state.singleOrderError = false;
+      state.order = false;
     },
   },
   extraReducers: (builder) => {
@@ -81,7 +88,6 @@ const orderSlice = createSlice({
       })
       .addCase(getOrders.fulfilled, (state, action) => {
         state.getOrderLoading = false;
-        state.getOrderError = false;
         state.getOrderSuccess = true;
         state.orders = action.payload;
       })
@@ -90,9 +96,11 @@ const orderSlice = createSlice({
         state.getOrderError = action.error.message;
         state.getOrderSuccess = false;
         state.orders = [];
-      })
+      });
+
+    builder
       .addCase(confirmOrder.pending, (state) => {
-        state.confirmOrderLoading = false;
+        state.confirmOrderLoading = true; // Changed from false to true
       })
       .addCase(confirmOrder.fulfilled, (state) => {
         state.confirmOrderLoading = false;
@@ -104,8 +112,24 @@ const orderSlice = createSlice({
         state.confirmOrderError = action.error.message;
         state.confirmOrderSuccess = false;
       });
+
+    builder
+      .addCase(getSingleOrder.pending, (state) => {
+        state.singleOrderLoading = true; // Changed from false to true
+      })
+      .addCase(getSingleOrder.fulfilled, (state, action) => {
+        state.singleOrderLoading = false;
+        state.singleOrderError = false;
+        state.order = action.payload;
+      })
+      .addCase(getSingleOrder.rejected, (state, action) => {
+        state.singleOrderLoading = false;
+        state.singleOrderError = action.error.message;
+        state.order = false;
+      });
   },
 });
 
-export const { reset } = orderSlice.actions;
+export const { resetGetOrder, resetConfirm, resetSingleOrder } =
+  orderSlice.actions;
 export default orderSlice.reducer;
