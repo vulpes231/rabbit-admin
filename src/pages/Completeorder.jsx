@@ -86,6 +86,10 @@ const CompleteOrder = () => {
           Customer Contact:{" "}
           <span className="font-normal">{order?.order?.customerEmail}</span>
         </p>
+        <p className="font-medium">
+          Status:
+          <span className="font-normal">{order?.order?.status}</span>
+        </p>
       </div>
       <h5 className="text-lg font-semibold mb-2">Enter the item details</h5>
       <form onSubmit={handleSubmit} className="space-y-4">
