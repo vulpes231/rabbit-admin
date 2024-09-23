@@ -9,6 +9,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import Productmodal from "../components/product/Productmodal";
 import Newproduct from "../components/product/Newproduct";
 import Deletemodal from "../components/product/Deletemodal";
+
 const header = [
   {
     id: "_id",

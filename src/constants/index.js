@@ -5,6 +5,7 @@ const links = [
   { id: "login", title: "Login", path: "/" },
   { id: "signup", title: "Signup", path: "/signup" },
 ];
+
 const authLinks = [
   { id: "dash", title: "Dashboard", path: "/dash" },
   { id: "user", title: "Users", path: "/users" },
@@ -13,6 +14,7 @@ const authLinks = [
   { id: "order", title: "Orders", path: "/orders" },
   { id: "product", title: "Products", path: "/products" },
   { id: "ticket", title: "Tickets", path: "/tickets" },
+  { id: "address", title: "Addresses", path: "/address" },
 ];
 
 export { devServer, liveServer, links, authLinks };

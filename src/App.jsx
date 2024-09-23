@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutAdmin, resetLogout } from "./features/logoutSlice";
 import { resetLogin } from "./features/loginSlice";
 import Completeorder from "./pages/Completeorder";
+import Adminwallet from "./pages/Adminwallet";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -97,6 +98,7 @@ const App = () => {
             <Route path="/tickets" element={<Tickets />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/complete/:id" element={<Completeorder />} />
+            <Route path="/address" element={<Adminwallet />} />
           </Routes>
         </div>
         {logoutLoading && (

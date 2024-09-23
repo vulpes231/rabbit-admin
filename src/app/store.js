@@ -9,6 +9,7 @@ import productReducer from "../features/productSlice";
 import ticketReducer from "../features/ticketSlice";
 import chatReducer from "../features/chatSlice";
 import logoutReducer from "../features/logoutSlice";
+import addressReducer from "../features/addressSlice";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     ticket: ticketReducer,
     chat: chatReducer,
     logout: logoutReducer,
+    address: addressReducer,
   },
 });
 
