@@ -17,22 +17,20 @@ const headers = [
 const Adminwallet = () => {
   const dispatch = useDispatch();
   const [myAddresses, setMyAddress] = useState([]);
-  const {
-    addresses,
-    updateAddressLoading,
-    updateAddressError,
-    addressUpdated,
-  } = useSelector((state) => state.address);
+  const { addresses, updateAddressError, addressUpdated } = useSelector(
+    (state) => state.address
+  );
   const accessToken = getAccessToken();
 
-  // console.log(addressUpdated);
-
-  // Initialize state for storing address edits
+  // Initialize state for storing address edits and individual loading states
   const [editedAddresses, setEditedAddresses] = useState({});
+  const [loadingStates, setLoadingStates] = useState({});
 
   const handleAddress = (rowId) => {
     const formData = { address: editedAddresses[rowId] || "" };
-    console.log(rowId, formData);
+    // Set the loading state for the specific row
+    setLoadingStates((prev) => ({ ...prev, [rowId]: true }));
+
     // Dispatch the update action
     dispatch(updateAddress({ rowId, formData }));
   };
@@ -48,6 +46,8 @@ const Adminwallet = () => {
   useEffect(() => {
     if (addressUpdated) {
       dispatch(resetAddressUpdate());
+      // Reset the loading state after the update
+      setLoadingStates({});
     }
   }, [addressUpdated]);
 
@@ -110,8 +110,9 @@ const Adminwallet = () => {
                   <button
                     onClick={() => handleAddress(add._id)}
                     className="bg-blue-500 text-white px-4 py-1.5 rounded-md"
+                    disabled={loadingStates[add._id]} // Disable button if loading
                   >
-                    {!updateAddressLoading ? "Save" : "Wait..."}
+                    {loadingStates[add._id] ? "Wait..." : "Save"}
                   </button>
                 </td>
               </tr>

@@ -56,7 +56,7 @@ const Datatable = ({
                   key={colIndex}
                   className="px-6 py-4 whitespace-nowrap text-xs text-gray-900 capitalize font-medium"
                 >
-                  {row[hdr.id]} {/* Access row data using hdr.id */}
+                  {row[hdr.id]}
                 </td>
               ))}
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
