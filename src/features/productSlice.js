@@ -79,7 +79,7 @@ export const editProduct = createAsyncThunk(
     console.log(formData);
     try {
       const accessToken = getAccessToken();
-      const url = `${devServer}/manageproducts/edit/${id}`;
+      const url = `${liveServer}/manageproducts/edit/${id}`;
       const response = await axios.put(url, formData, {
         headers: {
           "Content-Type": "application/json",

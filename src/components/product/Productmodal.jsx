@@ -83,11 +83,13 @@ const ProductModal = ({ rowData, closeModal }) => {
   };
 
   useEffect(() => {
+    let timeout;
     if (editProductSuccess) {
-      const timeout = setTimeout(() => {
+      timeout = 2000;
+      setTimeout(() => {
         window.location.reload();
         dispatch(resetEditProduct());
-      }, 6000);
+      }, timeout);
       return () => clearTimeout(timeout);
     }
   }, [editProductSuccess, closeModal]);
@@ -168,6 +170,9 @@ const ProductModal = ({ rowData, closeModal }) => {
           </div>
           {editProductError && (
             <p className="text-red-500">{editProductError}</p>
+          )}
+          {editProductSuccess && (
+            <p className="text-green-500">product updated.</p>
           )}
           <button type="submit" className="bg-blue-500 text-white w-full p-2">
             {editProductLoading ? "Updating..." : "Update Product"}
