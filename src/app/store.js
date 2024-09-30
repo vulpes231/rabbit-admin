@@ -10,6 +10,7 @@ import ticketReducer from "../features/ticketSlice";
 import chatReducer from "../features/chatSlice";
 import logoutReducer from "../features/logoutSlice";
 import addressReducer from "../features/addressSlice";
+import adminReducer from "../features/adminSlice";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     chat: chatReducer,
     logout: logoutReducer,
     address: addressReducer,
+    admin: adminReducer,
   },
 });
 

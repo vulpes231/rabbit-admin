@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { devServer, liveServer } from "../constants";
+import { devServer, liveServer, sendError } from "../constants";
 import { getAccessToken } from "../utils/utilities";
 
 const initialState = {
@@ -19,13 +19,17 @@ const initialState = {
 export const getOrders = createAsyncThunk("order/getOrders", async () => {
   const accessToken = getAccessToken();
   const url = `${liveServer}/manageorders`;
-  const response = await axios.get(url, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  return response.data;
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    sendError(error);
+  }
 });
 
 export const confirmOrder = createAsyncThunk(
@@ -33,13 +37,17 @@ export const confirmOrder = createAsyncThunk(
   async ({ orderId, formData }) => {
     const accessToken = getAccessToken();
     const url = `${liveServer}/manageorders/${orderId}`;
-    const response = await axios.post(url, formData, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.data;
+    try {
+      const response = await axios.post(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      sendError(error);
+    }
   }
 );
 
@@ -49,13 +57,17 @@ export const getSingleOrder = createAsyncThunk(
     // console.log(orderId);
     const accessToken = getAccessToken();
     const url = `${liveServer}/manageorders/${orderId}`;
-    const response = await axios.get(url, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-    return response.data;
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      sendError(error);
+    }
   }
 );
 
@@ -100,7 +112,7 @@ const orderSlice = createSlice({
 
     builder
       .addCase(confirmOrder.pending, (state) => {
-        state.confirmOrderLoading = true; // Changed from false to true
+        state.confirmOrderLoading = true;
       })
       .addCase(confirmOrder.fulfilled, (state) => {
         state.confirmOrderLoading = false;
@@ -115,7 +127,7 @@ const orderSlice = createSlice({
 
     builder
       .addCase(getSingleOrder.pending, (state) => {
-        state.singleOrderLoading = true; // Changed from false to true
+        state.singleOrderLoading = true;
       })
       .addCase(getSingleOrder.fulfilled, (state, action) => {
         state.singleOrderLoading = false;

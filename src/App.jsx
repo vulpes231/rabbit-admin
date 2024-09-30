@@ -10,6 +10,7 @@ import {
   Orders,
   Products,
   Tickets,
+  Admins,
 } from "./pages";
 import { getAccessToken } from "./utils/utilities";
 import Chat from "./pages/Chat";
@@ -83,7 +84,7 @@ const App = () => {
         >
           <Routes>
             <Route path="/" element={<Content />} />
-            <Route path="/signup" element={<Signup />} />
+            {/* <Route path="/signup" element={<Signup />} /> */}
             <Route
               path="/dash"
               element={
@@ -99,6 +100,7 @@ const App = () => {
             <Route path="/chat" element={<Chat />} />
             <Route path="/complete/:id" element={<Completeorder />} />
             <Route path="/address" element={<Adminwallet />} />
+            <Route path="/admin" element={<Admins />} />
           </Routes>
         </div>
         {logoutLoading && (

@@ -1,3 +1,4 @@
+import Admins from "./Admins";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
 import Orders from "./Orders";
@@ -9,6 +10,7 @@ import Users from "./Users";
 import Wallets from "./Wallets";
 
 export {
+  Admins,
   Login,
   Tickets,
   Dashboard,
