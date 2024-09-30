@@ -3,7 +3,7 @@ import Dashboard from "./Dashboard";
 import Login from "./Login";
 import Orders from "./Orders";
 import Products from "./Products";
-import Signup from "./Signup";
+import Createadmin from "./Createadmin";
 import Tickets from "./Tickets";
 import Transactions from "./Transactions";
 import Users from "./Users";
@@ -14,7 +14,7 @@ export {
   Login,
   Tickets,
   Dashboard,
-  Signup,
+  Createadmin,
   Transactions,
   Wallets,
   Users,

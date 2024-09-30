@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
 import { useDispatch, useSelector } from "react-redux";
 import { getAdmins } from "../features/adminSlice";
+import { Createadmin } from ".";
 
 const headers = [
   {
@@ -29,11 +30,13 @@ const Admins = () => {
   const dispatch = useDispatch();
   const accessToken = getAccessToken();
   const { admins } = useSelector((state) => state.admin);
+  const [showCreateAdmin, setShowCreateAdmin] = useState(false);
 
   const [myAdmins, setMyAdmins] = useState([]);
 
-  const createAdmin = (e) => {
-    e.preventDefault();
+  const handleCreateAdmin = () => {
+    console.log("clicked");
+    setShowCreateAdmin(true);
   };
 
   useEffect(() => {
@@ -41,16 +44,21 @@ const Admins = () => {
       dispatch(getAdmins());
     }
   }, [dispatch, accessToken]);
+
   useEffect(() => {
     if (admins) {
       setMyAdmins(admins?.admins);
     }
   }, [admins]);
+
   return (
     <div className="flex flex-col gap-5">
       <div className="flex justify-between items-center">
         <h3 className="font-bold text-lg p-4">Admins</h3>
-        <button className="px-5 py-2.5 bg-red-500 text-white rounded-lg ">
+        <button
+          onClick={handleCreateAdmin}
+          className="px-5 py-2.5 bg-red-500 text-white rounded-lg "
+        >
           Create admin
         </button>
       </div>
@@ -88,8 +96,11 @@ const Admins = () => {
                   <td className="capitalize px-5 py-3">{adm.role}</td>
                   <td className="px-5 py-3">
                     <span>
-                      <button className="bg-red-500 text-white px-5 py-2 rounded-3xl capitalize">
-                        edit
+                      <button
+                        // onClick={handleCreateAdmin}
+                        className="bg-red-500 text-white px-5 py-2 rounded-3xl capitalize"
+                      >
+                        delete
                       </button>
                     </span>
                   </td>
@@ -98,6 +109,7 @@ const Admins = () => {
             })}
           </tbody>
         </table>
+        {showCreateAdmin && <Createadmin />}
       </div>
     </div>
   );

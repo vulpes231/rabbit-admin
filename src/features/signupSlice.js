@@ -1,21 +1,24 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { devServer, liveServer } from "../constants";
+import { getAccessToken } from "../utils/utilities";
 
 const initialState = {
-  loading: false,
-  error: false,
-  success: false,
+  createAdminLoading: false,
+  createAdminError: false,
+  adminCreated: false,
 };
 
 export const signupAdmin = createAsyncThunk(
   "signup/signupAdmin",
   async (formData) => {
+    const accessToken = getAccessToken();
     try {
       const url = `${liveServer}/enroll`;
       const response = await axios.post(url, formData, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
         },
       });
       console.log(response.data);
@@ -35,29 +38,29 @@ const signupAdminSlice = createSlice({
   name: "signup",
   initialState,
   reducers: {
-    reset(state) {
-      state.loading = false;
-      state.error = false;
-      state.success = false;
+    resetCreateAdmin(state) {
+      state.createAdminLoading = false;
+      state.createAdminError = false;
+      state.adminCreated = false;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(signupAdmin.pending, (state) => {
-        state.loading = true;
+        state.createAdminLoading = true;
       })
-      .addCase(signupAdmin.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = false;
-        state.success = true;
+      .addCase(signupAdmin.fulfilled, (state) => {
+        state.createAdminLoading = false;
+        state.createAdminError = false;
+        state.adminCreated = true;
       })
       .addCase(signupAdmin.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-        state.success = false;
+        state.createAdminLoading = false;
+        state.createAdminError = action.error.message;
+        state.adminCreated = false;
       });
   },
 });
 
-export const { reset } = signupAdminSlice.actions;
+export const { resetCreateAdmin } = signupAdminSlice.actions;
 export default signupAdminSlice.reducer;

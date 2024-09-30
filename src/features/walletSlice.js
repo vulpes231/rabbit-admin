@@ -11,6 +11,12 @@ const initialState = {
   confirmDepositError: false,
   confirmDepositSuccess: false,
   wallets: [],
+  suspendLoading: false,
+  suspendError: false,
+  suspended: false,
+  unSuspendLoading: false,
+  unSuspendError: false,
+  unSuspended: false,
 };
 
 export const getAllWallets = createAsyncThunk(
@@ -25,6 +31,63 @@ export const getAllWallets = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
+      // console.log("Wallets", response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const errorMsg = error.response.data.message;
+        throw new Error(errorMsg);
+      } else {
+        throw error;
+      }
+    }
+  }
+);
+
+export const suspendWallet = createAsyncThunk(
+  "wallet/suspendWallet",
+  async (walletId) => {
+    try {
+      const accessToken = getAccessToken();
+      const url = `${liveServer}/managewallets/${walletId}`;
+      const response = await axios.post(
+        url,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+      // console.log("Wallets", response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const errorMsg = error.response.data.message;
+        throw new Error(errorMsg);
+      } else {
+        throw error;
+      }
+    }
+  }
+);
+export const unSuspendWallet = createAsyncThunk(
+  "wallet/unSuspendWallet",
+  async (walletId) => {
+    try {
+      const accessToken = getAccessToken();
+      const url = `${liveServer}/managewallets/${walletId}`;
+      const response = await axios.put(
+        url,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
       // console.log("Wallets", response.data);
       return response.data;
     } catch (error) {
@@ -78,6 +141,16 @@ const walletSlice = createSlice({
       state.confirmDepositError = false;
       state.confirmDepositSuccess = false;
     },
+    resetSuspend(state) {
+      state.suspendError = false;
+      state.suspendLoading = false;
+      state.suspended = false;
+    },
+    resetUnSuspend(state) {
+      state.unSuspendError = false;
+      state.unSuspendLoading = false;
+      state.unSuspended = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -95,9 +168,11 @@ const walletSlice = createSlice({
         state.getAllWalletsError = action.error.message;
         state.getWalletSuccess = false;
         state.wallets = [];
-      })
+      });
+
+    builder
       .addCase(confirmDeposit.pending, (state) => {
-        state.confirmDepositLoading = false;
+        state.confirmDepositLoading = true;
       })
       .addCase(confirmDeposit.fulfilled, (state) => {
         state.confirmDepositLoading = false;
@@ -109,8 +184,37 @@ const walletSlice = createSlice({
         state.confirmDepositError = action.error.message;
         state.confirmDepositSuccess = false;
       });
+    builder
+      .addCase(suspendWallet.pending, (state) => {
+        state.suspendLoading = true;
+      })
+      .addCase(suspendWallet.fulfilled, (state) => {
+        state.suspendLoading = false;
+        state.suspendError = false;
+        state.suspended = true;
+      })
+      .addCase(suspendWallet.rejected, (state, action) => {
+        state.suspendLoading = false;
+        state.suspendError = action.error.message;
+        state.suspended = false;
+      });
+    builder
+      .addCase(unSuspendWallet.pending, (state) => {
+        state.unSuspendLoading = true;
+      })
+      .addCase(unSuspendWallet.fulfilled, (state) => {
+        state.unSuspendLoading = false;
+        state.unSuspendError = false;
+        state.unSuspended = true;
+      })
+      .addCase(unSuspendWallet.rejected, (state, action) => {
+        state.unSuspendLoading = false;
+        state.unSuspendError = action.error.message;
+        state.unSuspended = false;
+      });
   },
 });
 
-export const { reset, resetConfirmTrnx } = walletSlice.actions;
+export const { reset, resetConfirmTrnx, resetSuspend, resetUnSuspend } =
+  walletSlice.actions;
 export default walletSlice.reducer;

@@ -3,7 +3,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { Content, Navbar } from "./components";
 import {
   Dashboard,
-  Signup,
+  // Signup,
   Transactions,
   Wallets,
   Users,
@@ -26,7 +26,7 @@ const App = () => {
   const navigate = useNavigate();
   const [token, setToken] = useState(false);
   const [toggle, setToggle] = useState(false);
-  const [activeLink, setActiveLink] = useState("dash");
+  const [activeLink, setActiveLink] = useState("");
   const accessToken = getAccessToken();
 
   const { logoutError, logoutLoading, logoutSuccess } = useSelector(

@@ -3,20 +3,24 @@ import { Formdiv, Section } from "../components";
 import Forminput from "../components/Forminput";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { signupAdmin } from "../features/signupSlice";
+import { resetCreateAdmin, signupAdmin } from "../features/signupSlice";
 
 const initialState = {
   username: "",
   password: "",
   email: "",
+  role: "",
 };
 
 const Signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { success, error, loading } = useSelector((state) => state.signup);
+  const { adminCreated, createAdminError, createAdminLoading } = useSelector(
+    (state) => state.signup
+  );
   const [formData, setFormData] = useState(initialState);
+  const [customError, setCustomError] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,23 +33,42 @@ const Signup = () => {
   const handleSignup = (e) => {
     e.preventDefault();
     dispatch(signupAdmin(formData));
+    console.log(formData);
   };
 
   useEffect(() => {
-    if (success) {
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+    if (createAdminError) {
+      setCustomError(createAdminError);
     }
+  }, [createAdminError]);
+
+  useEffect(() => {
+    let timeout;
+    if (success) {
+      timeout = 2000;
+      setTimeout(() => {
+        resetCreateAdmin();
+        window.location.reload();
+      }, timeout);
+    }
+    return () => clearTimeout(timeout);
   }, [navigate, success]);
 
   useEffect(() => {
-    document.title = "Admin - Enroll ";
-  }, []);
+    let timeout;
+    if (customError) {
+      timeout = 4000;
+      setTimeout(() => {
+        resetCreateAdmin();
+        setCustomError(false);
+      }, timeout);
+    }
+    return () => clearTimeout(timeout);
+  }, [customError]);
 
   return (
-    <Section>
-      <div className="w-full h-full flex items-center justify-center">
+    <section className="w-full h-screen top-0 left-0 absolute bg-black bg-opacity-50 flex items-center justify-center">
+      <div>
         <form
           onSubmit={handleSignup}
           action=""
@@ -72,21 +95,34 @@ const Signup = () => {
               handleChange={handleInputChange}
             />
           </Formdiv>
+          <Formdiv>
+            <label htmlFor="">role</label>
+            <select
+              value={formData.role}
+              name="role"
+              onChange={handleInputChange}
+              className="w-full outline-none border-2 p-2 border-gray-300 placeholder:text-sm placeholder:font-thin focus:outline-red-500 focus:border-none bg-white"
+            >
+              <option value="">choose role</option>
+              <option value="dev">dev</option>
+              <option value="moderator">moderator</option>
+            </select>
+          </Formdiv>
           <div>
             <label htmlFor="">password</label>
             <Forminput
-              type={"text"}
+              type={"password"}
               placeHolder={"Enter password"}
               value={formData.password}
               name="password"
               handleChange={handleInputChange}
             />
           </div>
-          {error && (
+          {customError ? (
             <p className="text-red-700 font-sm bg-red-500 bg-opacity-10 p-2 ">
-              {error}
+              {customError}
             </p>
-          )}
+          ) : null}
           {success && (
             <p className="text-green-700 font-sm bg-green-500 bg-opacity-10 p-2 ">
               {`Admin ${formData.username} created successfully.`}
@@ -97,7 +133,7 @@ const Signup = () => {
           </button>
         </form>
       </div>
-    </Section>
+    </section>
   );
 };
 
