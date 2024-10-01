@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import Datatable from "../components/Datatable";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
-import { getAllWallets, suspendWallet } from "../features/walletSlice";
+import {
+  getAllWallets,
+  resetUnSuspend,
+  suspendWallet,
+  unSuspendWallet,
+} from "../features/walletSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const header = [
@@ -30,6 +35,8 @@ const Wallets = () => {
 
   const accessToken = getAccessToken();
   const [myWallets, setMyWallets] = useState([]);
+  const [unBanModal, setUnBanModal] = useState(false);
+
   const {
     getWalletsError,
     getWalletsLoading,
@@ -37,24 +44,52 @@ const Wallets = () => {
     suspendLoading,
     suspendError,
     suspended,
+    unSuspendLoading,
+    unSuspendError,
+    unSuspended,
   } = useSelector((state) => state.wallet);
 
   const [walletId, setWalletId] = useState(false);
+  const [unBanId, setUnbanId] = useState(false);
 
   const confirmBan = (row) => {
     setWalletId(row._id);
+    console.log(row);
   };
 
   const banWallet = (e) => {
     e.preventDefault();
     dispatch(suspendWallet(walletId));
   };
-  const cancelBan = (e) => {
-    e.preventDefault();
-    setWalletId(false);
+
+  const handleUnbanModal = (row) => {
+    console.log(row);
+    setUnbanId(row._id);
   };
 
-  // console.log(walletId);
+  const liftWalletBan = (e) => {
+    e.preventDefault();
+    dispatch(unSuspendWallet(unBanId));
+  };
+
+  const closeConfirm = () => {
+    setWalletId(false);
+  };
+  const closeUnban = () => {
+    setUnbanId(false);
+  };
+
+  useEffect(() => {
+    if (suspended) {
+      window.location.reload();
+    }
+  }, [suspended]);
+
+  useEffect(() => {
+    if (unSuspended) {
+      window.location.reload();
+    }
+  }, [unSuspended]);
 
   useEffect(() => {
     if (!accessToken) {
@@ -78,6 +113,30 @@ const Wallets = () => {
     document.title = "Admin - Wallets";
   }, []);
 
+  useEffect(() => {
+    let timeout;
+    if (unSuspendError) {
+      timeout = 2000;
+      setTimeout(() => {
+        resetUnSuspend();
+      }, timeout);
+    }
+    return () => clearTimeout(timeout);
+  }, [unSuspendError]);
+
+  useEffect(() => {
+    let timeout;
+    if (suspendError) {
+      timeout = 2000;
+      setTimeout(() => {
+        resetUnSuspend();
+      }, timeout);
+    }
+    return () => clearTimeout(timeout);
+  }, [suspendError]);
+
+  const btnTitle = "suspend";
+
   return (
     <div>
       <h3 className="font-bold text-lg p-4">Wallets</h3>
@@ -85,20 +144,49 @@ const Wallets = () => {
         <Datatable
           headers={header}
           data={myWallets}
-          title={"Suspend"}
+          title={btnTitle}
           handleClick={confirmBan}
-          customClass={
-            "bg-yellow-500 text-white px-5 py-2 inline-flex rounded-md border border-yellow-500 hover:bg-yellow-700"
-          }
+          customClass={`text-white px-4 py-2.5 rounded-lg ${
+            btnTitle == "suspend" ? "bg-yellow-500" : "bg-gray-500"
+          }`}
+          handleUnban={handleUnbanModal}
         />
         {walletId && (
           <div className="top-0 right-0 absolute p-6 bg-white shadow-xl m-6 rounded-lg ">
             <p>confirm wallet suspension</p>
+            {suspendError && (
+              <p className="text-xs text-red-500">{suspendError}</p>
+            )}
             <div className="flex justify-between text-white">
               <button onClick={banWallet} className="bg-green-500 px-6 py-1.5">
                 {!suspendLoading ? "yes" : "wait..."}
               </button>
-              <button onClick={cancelBan} className="bg-gray-500 px-6 py-1.5">
+              <button
+                onClick={closeConfirm}
+                className="bg-gray-500 px-6 py-1.5"
+              >
+                no
+              </button>
+            </div>
+          </div>
+        )}
+
+        {unBanId && (
+          <div className="top-0 right-0 absolute p-6 bg-white shadow-xl m-6 rounded-lg flex flex-col gap-3">
+            <p>
+              Do you want to lift the ban <br /> on this wallet?
+            </p>
+            {unSuspendError && (
+              <p className="text-xs text-red-500">{unSuspendError}</p>
+            )}
+            <div className="flex justify-between text-white">
+              <button
+                onClick={liftWalletBan}
+                className="bg-green-500 px-6 py-1.5"
+              >
+                {!unSuspendLoading ? "yes" : "wait..."}
+              </button>
+              <button onClick={closeUnban} className="bg-gray-500 px-6 py-1.5">
                 no
               </button>
             </div>

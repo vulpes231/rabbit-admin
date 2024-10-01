@@ -10,6 +10,7 @@ const Datatable = ({
   deleteBtn,
   handleDelete,
   cusClass,
+  handleUnban,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -63,9 +64,19 @@ const Datatable = ({
                 <span className="flex items-center gap-2">
                   <button
                     onClick={() => handleClick(row)}
-                    className={customClass}
+                    className={`${
+                      row.suspended ? "hidden" : "flex"
+                    } ${customClass}`}
                   >
                     {title}
+                  </button>
+                  <button
+                    onClick={() => handleUnban(row)}
+                    className={`${
+                      row.suspended ? "flex" : "hidden"
+                    } bg-green-500 text-white px-4 py-2.5 rounded-lg`}
+                  >
+                    unban
                   </button>
                   <button
                     onClick={() => handleDelete(row)}

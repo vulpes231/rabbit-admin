@@ -38,6 +38,10 @@ const Admins = () => {
     console.log("clicked");
     setShowCreateAdmin(true);
   };
+  const closeCreateAdmin = () => {
+    // console.log("clicked");
+    setShowCreateAdmin(false);
+  };
 
   useEffect(() => {
     if (accessToken) {
@@ -109,7 +113,7 @@ const Admins = () => {
             })}
           </tbody>
         </table>
-        {showCreateAdmin && <Createadmin />}
+        {showCreateAdmin && <Createadmin close={closeCreateAdmin} />}
       </div>
     </div>
   );

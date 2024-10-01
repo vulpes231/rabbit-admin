@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Formdiv, Section } from "../components";
+import React, { useEffect, useState, useRef } from "react";
+import { Formdiv } from "../components";
 import Forminput from "../components/Forminput";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,16 +12,16 @@ const initialState = {
   role: "",
 };
 
-const Signup = () => {
+const Signup = ({ close }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const modalRef = useRef(null); // Create a ref for the modal
 
   const { adminCreated, createAdminError, createAdminLoading } = useSelector(
     (state) => state.signup
   );
   const [formData, setFormData] = useState(initialState);
   const [customError, setCustomError] = useState(false);
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -36,6 +36,12 @@ const Signup = () => {
     console.log(formData);
   };
 
+  const handleClickOutside = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      close();
+    }
+  };
+
   useEffect(() => {
     if (createAdminError) {
       setCustomError(createAdminError);
@@ -44,7 +50,7 @@ const Signup = () => {
 
   useEffect(() => {
     let timeout;
-    if (success) {
+    if (adminCreated) {
       timeout = 2000;
       setTimeout(() => {
         resetCreateAdmin();
@@ -52,7 +58,7 @@ const Signup = () => {
       }, timeout);
     }
     return () => clearTimeout(timeout);
-  }, [navigate, success]);
+  }, [navigate, adminCreated]);
 
   useEffect(() => {
     let timeout;
@@ -66,12 +72,21 @@ const Signup = () => {
     return () => clearTimeout(timeout);
   }, [customError]);
 
+  // Add event listener for clicks
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <section className="w-full h-screen top-0 left-0 absolute bg-black bg-opacity-50 flex items-center justify-center">
-      <div>
+      <div ref={modalRef}>
+        {" "}
+        {/* Attach ref to modal container */}
         <form
           onSubmit={handleSignup}
-          action=""
           className="bg-white rounded-sm shadow p-6 flex flex-col gap-4 w-full md:w-[380px]"
         >
           <h4 className="text-xl font-bold capitalize my-5">Create Admin</h4>
@@ -118,18 +133,18 @@ const Signup = () => {
               handleChange={handleInputChange}
             />
           </div>
-          {customError ? (
+          {customError && (
             <p className="text-red-700 font-sm bg-red-500 bg-opacity-10 p-2 ">
               {customError}
             </p>
-          ) : null}
-          {success && (
+          )}
+          {adminCreated && (
             <p className="text-green-700 font-sm bg-green-500 bg-opacity-10 p-2 ">
               {`Admin ${formData.username} created successfully.`}
             </p>
           )}
           <button className="bg-red-500 text-white font-semibold text-sm capitalize py-3 px-2 rounded-md mt-4 hover:bg-red-800">
-            {loading ? "Creating admin..." : "Create admin"}
+            {createAdminLoading ? "Creating admin..." : "Create admin"}
           </button>
         </form>
       </div>

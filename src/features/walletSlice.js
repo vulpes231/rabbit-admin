@@ -74,10 +74,11 @@ export const suspendWallet = createAsyncThunk(
 );
 export const unSuspendWallet = createAsyncThunk(
   "wallet/unSuspendWallet",
-  async (walletId) => {
+  async (unBanId) => {
+    console.log(unBanId);
     try {
       const accessToken = getAccessToken();
-      const url = `${liveServer}/managewallets/${walletId}`;
+      const url = `${liveServer}/managewallets/${unBanId}`;
       const response = await axios.put(
         url,
         {},
