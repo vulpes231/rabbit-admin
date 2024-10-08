@@ -6,8 +6,10 @@ import { getAccessToken } from "../utils/utilities";
 const initialState = {
   getTrnxLoading: false,
   getTrnxError: false,
-  getTrnxSuccess: false,
   trnxs: [],
+  completeTrnxLoading: false,
+  completeTrnxError: false,
+  trnxCompleted: false,
 };
 
 export const getTrnxs = createAsyncThunk("trnx/getTrnxs", async () => {
@@ -32,15 +34,40 @@ export const getTrnxs = createAsyncThunk("trnx/getTrnxs", async () => {
   }
 });
 
+export const completeTransaction = createAsyncThunk(
+  "trnx/completeTransaction",
+  async (formData) => {
+    const accessToken = getAccessToken();
+    const url = `${liveServer}/managetrnxs`;
+    try {
+      console.log(formData);
+      const response = await axios.put(url, formData, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      console.log("Trnx", response.data);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        const errorMsg = error.response.data.message;
+        throw new Error(errorMsg);
+      } else {
+        throw error;
+      }
+    }
+  }
+);
+
 const trnxSlice = createSlice({
   name: "trnx",
   initialState,
   reducers: {
-    reset(state) {
-      state.getTrnxLoading = false;
-      state.getTrnxError = false;
-      state.getTrnxSuccess = false;
-      state.trnxs = [];
+    resetComplete(state) {
+      state.completeTrnxError = false;
+      state.completeTrnxLoading = false;
+      state.trnxCompleted = false;
     },
   },
   extraReducers: (builder) => {
@@ -51,17 +78,30 @@ const trnxSlice = createSlice({
       .addCase(getTrnxs.fulfilled, (state, action) => {
         state.getTrnxLoading = false;
         state.getTrnxError = false;
-        state.getTrnxSuccess = true;
         state.trnxs = action.payload;
       })
       .addCase(getTrnxs.rejected, (state, action) => {
         state.getTrnxLoading = false;
         state.getTrnxError = action.error.message;
-        state.getTrnxSuccess = false;
         state.trnxs = [];
+      });
+
+    builder
+      .addCase(completeTransaction.pending, (state) => {
+        state.completeTrnxLoading = true;
+      })
+      .addCase(completeTransaction.fulfilled, (state) => {
+        state.completeTrnxLoading = false;
+        state.completeTrnxError = false;
+        state.trnxCompleted = true;
+      })
+      .addCase(completeTransaction.rejected, (state, action) => {
+        state.completeTrnxLoading = false;
+        state.completeTrnxError = action.error.message;
+        state.trnxCompleted = false;
       });
   },
 });
 
-export const { reset } = trnxSlice.actions;
+export const { resetComplete } = trnxSlice.actions;
 export default trnxSlice.reducer;

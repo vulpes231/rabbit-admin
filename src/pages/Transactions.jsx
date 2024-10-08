@@ -3,8 +3,15 @@ import Datatable from "../components/Datatable";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../utils/utilities";
 import { useDispatch, useSelector } from "react-redux";
-import { getTrnxs } from "../features/trnxSlice";
-import { confirmDeposit, resetConfirmTrnx } from "../features/walletSlice";
+import {
+  completeTransaction,
+  getTrnxs,
+  resetComplete,
+} from "../features/trnxSlice";
+
+const CompleteError = ({ error }) => {
+  return <div className="absolute bottom-10 right-[10px] p-6">{error}</div>;
+};
 
 const header = [
   {
@@ -16,12 +23,12 @@ const header = [
     name: "amount",
   },
   {
-    id: "creator",
-    name: "creator",
+    id: "userEmail",
+    name: "userEmail",
   },
   {
-    id: "method",
-    name: "method",
+    id: "currency",
+    name: "currency",
   },
   {
     id: "status",
@@ -37,15 +44,18 @@ const Transactions = () => {
   const [confirmModal, setConfirmModal] = useState(false);
   const [trnxId, setTrnxId] = useState(null);
   const [status, setStatus] = useState(null);
-  const { getTransactionError, getTransactionLoading, trnxs } = useSelector(
-    (state) => state.trnx
-  );
 
-  const { confirmDepositLoading, confirmDepositError, confirmDepositSuccess } =
-    useSelector((state) => state.wallet);
+  const {
+    getTransactionError,
+    getTransactionLoading,
+    trnxs,
+    completeTrnxError,
+    completeTrnxLoading,
+    trnxCompleted,
+  } = useSelector((state) => state.trnx);
 
   const handleModal = (row) => {
-    console.log(row.status);
+    // console.log(row.status);
     setTrnxId(row._id);
     setStatus(row.status);
     setConfirmModal(true);
@@ -57,8 +67,11 @@ const Transactions = () => {
   };
 
   const approveTrnx = () => {
-    console.log(trnxId);
-    dispatch(confirmDeposit(trnxId));
+    const data = {
+      transactionId: trnxId,
+    };
+    dispatch(completeTransaction(data));
+    console.log(data);
   };
 
   useEffect(() => {
@@ -77,28 +90,28 @@ const Transactions = () => {
 
   useEffect(() => {
     let timeout;
-    if (confirmDepositSuccess) {
+    if (trnxCompleted) {
       timeout = 3000;
       setTimeout(() => {
         setConfirmModal(false);
-        dispatch(resetConfirmTrnx());
+        dispatch(resetComplete());
         window.location.reload();
       }, timeout);
     }
     return () => clearTimeout(timeout);
-  }, [confirmDepositSuccess]);
+  }, [trnxCompleted]);
 
   useEffect(() => {
     let timeout;
-    if (confirmDepositError) {
+    if (completeTrnxError) {
       timeout = 3000;
       setTimeout(() => {
         setConfirmModal(false);
-        dispatch(resetConfirmTrnx());
+        dispatch(resetComplete());
       }, timeout);
     }
     return () => clearTimeout(timeout);
-  }, [confirmDepositError]);
+  }, [completeTrnxError]);
 
   if (getTransactionLoading) {
     return <p className="mt-5">Getting transactions...</p>;
@@ -122,14 +135,15 @@ const Transactions = () => {
           }
         />
       </div>
+      {completeTrnxError && <CompleteError error={completeTrnxError} />}
       {confirmModal && (
         <div className="fixed top-[20px] right-0 flex flex-col p-6 gap-4 bg-white rounded-xl shadow w-[250px]">
           <p
             className={`text-xs font-medium ${
-              confirmDepositSuccess ? "text-green-500" : "text-slate-950"
+              trnxCompleted ? "text-green-500" : "text-slate-950"
             }`}
           >
-            {confirmDepositSuccess
+            {trnxCompleted
               ? "Deposit confirmed."
               : "Are you sure you want to approve?"}
           </p>
@@ -139,7 +153,7 @@ const Transactions = () => {
               disabled={status === "completed"}
               className="py-2 px-5 rounded-lg inline-flex bg-green-500 capitalize hover:bg-green-600 font-medium text-xs text-white"
             >
-              {!confirmDepositLoading ? "yes" : "wait..."}
+              {!completeTrnxLoading ? "yes" : "wait..."}
             </button>
             <button
               onClick={closeModal}
