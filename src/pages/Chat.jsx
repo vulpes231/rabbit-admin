@@ -8,6 +8,7 @@ import { getAccessToken } from "../utils/utilities";
 import { devServer, liveServer } from "../constants";
 import { MdSend } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
+import { getSingleOrder } from "../features/orderSlice";
 
 const initialState = {
   msg: "",
@@ -28,6 +29,11 @@ const Chat = () => {
 
   const { ticketData } = useSelector((state) => state.ticket);
   const { chatMessages } = useSelector((state) => state.chat);
+  const { singleOrderLoading, singleOrderError, order } = useSelector(
+    (state) => state.order
+  );
+
+  // console.log(order);
 
   const [admin, setAdmin] = useState(null);
   const messagesEndRef = useRef(null);
@@ -51,6 +57,7 @@ const Chat = () => {
     }
 
     dispatch(getTicketData(orderId));
+    dispatch(getSingleOrder(orderId));
   }, [accessToken, dispatch, navigate, orderId]);
 
   useEffect(() => {
@@ -128,6 +135,15 @@ const Chat = () => {
         </button>
       </header>
       <ul className="flex flex-col gap-4 p-4 overflow-y-auto flex-grow">
+        <span className="flex flex-col gap-1">
+          <small>Contact: {order?.order?.customerEmail}</small>
+          <small>Item: {order?.order?.item}</small>
+          <small>
+            Price: $
+            {parseFloat(order?.order?.qty) * parseFloat(order?.order?.price)}
+          </small>
+          <small>Quantity: {order?.order?.qty}</small>
+        </span>
         {chatMessages?.messages?.map((msg) => (
           <li
             className={`flex flex-col text-xs font-medium p-3 rounded-sm mb-2 ${
