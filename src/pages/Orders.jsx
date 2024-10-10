@@ -8,7 +8,7 @@ const header = [
   { id: "_id", name: "orderID" },
   { id: "item", name: "item" },
   { id: "customerEmail", name: "contact" },
-  { id: "customerName", name: "username" },
+  { id: "qty", name: "quantity" },
   { id: "price", name: "price" },
   { id: "status", name: "status" },
 ];
@@ -54,28 +54,31 @@ const Orders = () => {
     <div>
       <h3 className="font-bold text-lg p-4">Orders</h3>
       <div>
-        <table className="min-w-full">
-          <thead className="text-left">
-            <tr>
+        <table className="min-w-full bg-white divide-y-2 shadow-xl">
+          <thead className="text-left ">
+            <tr className="bg-red-500 text-white capitalize">
               {header.map((hd) => (
-                <th key={hd.id}>{hd.name}</th>
+                <th className="px-6 py-2" key={hd.id}>
+                  {hd.name}
+                </th>
               ))}
-              <th>actions</th>
+              <th className="px-6 py-2">actions</th>
             </tr>
           </thead>
-          <tbody>
-            {myOrders.map((ord) => (
+          <tbody className="min-w-full overflow-auto">
+            {myOrders?.map((ord) => (
               <tr key={ord._id}>
-                <td>{ord._id}</td>
-                <td>{ord.item}</td>
-                <td>{ord.customerEmail}</td>
-                <td>{ord.customerName}</td>
-                <td>{ord.price}</td>
-                <td>{ord.status}</td>
-                <td>
+                <td className="px-6 py-3">{ord._id}</td>
+                <td className="px-6 py-3">{ord.item}</td>
+                <td className="px-6 py-3">{ord.customerEmail}</td>
+                <td className="px-6 py-3">{ord.qty}</td>
+                <td className="px-6 py-3">{ord.price * ord.qty}</td>
+                <td className="px-6 py-3 capitalize">{ord.status}</td>
+                <td className="px-6 py-3">
                   <select
                     onChange={(e) => handleOptionChange(e, ord)}
                     defaultValue=""
+                    className="bg-white capitalize"
                   >
                     <option value="" disabled>
                       choose action
