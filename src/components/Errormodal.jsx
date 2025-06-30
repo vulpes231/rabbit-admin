@@ -7,7 +7,7 @@ const Errormodal = ({ errorText }) => {
 			<div className="flex flex-col items-center justify-center gap-2">
 				<CgClose className="w-8 h-8 text-red-500" />
 				<span className="flex flex-col items-center">
-					<h3 className="font-bold text-[14px] leading-[22px]">Success.</h3>
+					<h3 className="font-bold text-[14px] leading-[22px]">Error.</h3>
 					<h5 className="text-[13px] font-medium">{errorText}</h5>
 				</span>
 			</div>

@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Formdiv, Loadinmodal, Section, Successmodal } from "../components";
+import {
+	Errormodal,
+	Formdiv,
+	Loadinmodal,
+	Section,
+	Successmodal,
+} from "../components";
 import Forminput from "../components/Forminput";
 import { useDispatch, useSelector } from "react-redux";
-import { signinAdmin } from "../features/loginSlice";
+import { resetLogin, signinAdmin } from "../features/loginSlice";
 import { useNavigate } from "react-router-dom";
 import { style } from "../constants";
 
@@ -15,10 +21,11 @@ const Login = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
-	const { accessToken, admin, loading, error } = useSelector(
+	const { accessToken, admin, signinLoading, signinError } = useSelector(
 		(state) => state.signin
 	);
 	const [formData, setFormData] = useState(initialState);
+	const [error, setError] = useState("");
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -30,9 +37,14 @@ const Login = () => {
 
 	const handleLogin = (e) => {
 		e.preventDefault();
+		for (const key in formData) {
+			if (formData[key] === "") {
+				console.log(formData[key]);
+				setError(`${key[0].toUpperCase()}${key.slice(1)} is required!`);
+				return;
+			}
+		}
 		dispatch(signinAdmin(formData));
-		// console.log(formData);
-		// resetInput();
 	};
 
 	useEffect(() => {
@@ -40,6 +52,24 @@ const Login = () => {
 	}, []);
 
 	useEffect(() => {
+		if (signinError) {
+			setError(signinError);
+		}
+	}, [signinError]);
+
+	useEffect(() => {
+		let timeout;
+		if (error) {
+			timeout = setTimeout(() => {
+				dispatch(resetLogin());
+				setError("");
+			}, 3000);
+		}
+		return () => clearTimeout(timeout);
+	}, [dispatch, error]);
+
+	useEffect(() => {
+		let timeout;
 		if (accessToken && admin) {
 			try {
 				sessionStorage.setItem("accessToken", JSON.stringify(accessToken));
@@ -48,13 +78,15 @@ const Login = () => {
 				console.error("Failed to save access token:", error);
 			}
 
-			setTimeout(() => {
+			timeout = setTimeout(() => {
 				navigate("/dash");
 			}, 1000);
 		}
+		return () => clearTimeout(timeout);
 	}, [accessToken, admin, dispatch, navigate]);
+
 	return (
-		<Section>
+		<section className="w-full h-screen login-section">
 			<div className="w-full h-full flex items-center justify-center">
 				<form
 					onSubmit={handleLogin}
@@ -89,18 +121,19 @@ const Login = () => {
 							handleChange={handleInputChange}
 						/>
 					</Formdiv>
-					{error && (
+					{/* {error && (
 						<p className="text-red-700 font-sm bg-red-500 bg-opacity-10 p-2 ">
 							{error}
 						</p>
-					)}
+					)} */}
 
 					<button className={style.button}>login</button>
 				</form>
 			</div>
-			{loading && <Loadinmodal loadingText={"Logging in"} />}
+			{signinLoading && <Loadinmodal loadingText={"Logging in"} />}
 			{accessToken && <Successmodal successText={"Login Successful."} />}
-		</Section>
+			{error && <Errormodal errorText={error} />}
+		</section>
 	);
 };
 

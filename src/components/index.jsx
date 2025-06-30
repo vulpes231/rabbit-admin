@@ -5,6 +5,7 @@ import Formdiv from "./Formdiv";
 import Forminput from "./Forminput";
 import Loadinmodal from "./Loadinmodal";
 import Successmodal from "./Successmodal";
+import Errormodal from "./Errormodal";
 
 export {
 	Navbar,
@@ -14,4 +15,5 @@ export {
 	Forminput,
 	Loadinmodal,
 	Successmodal,
+	Errormodal,
 };
