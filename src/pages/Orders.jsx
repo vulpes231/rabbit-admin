@@ -4,6 +4,7 @@ import { getAccessToken } from "../utils/utilities";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../features/orderSlice";
 import Datatable from "../components/Datatable";
+import { style } from "../constants";
 
 const header = [
 	// { id: "_id", name: "orderID" },
@@ -32,7 +33,6 @@ const Orders = () => {
 
 	useEffect(() => {
 		if (orders) {
-			// console.log(orders);
 			const sortedOrders = [...orders?.orders].sort(
 				(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
 			);
@@ -64,45 +64,8 @@ const Orders = () => {
 
 	return (
 		<div>
-			<h3 className="font-bold text-lg p-4">Orders</h3>
+			<h3 className={style.title}>Orders</h3>
 			<div>
-				{/* <table className="min-w-full bg-white divide-y-2 shadow-xl">
-          <thead className="text-left ">
-            <tr className="bg-red-500 text-white capitalize">
-              {header.map((hd) => (
-                <th className="px-6 py-2" key={hd.id}>
-                  {hd.name}
-                </th>
-              ))}
-              <th className="px-6 py-2">actions</th>
-            </tr>
-          </thead>
-          <tbody className="min-w-full overflow-auto">
-            {myOrders?.map((ord) => (
-              <tr key={ord._id}>
-                <td className="px-6 py-3">{ord._id}</td>
-                <td className="px-6 py-3">{ord.item}</td>
-                <td className="px-6 py-3">{ord.customerEmail}</td>
-                <td className="px-6 py-3">{ord.qty}</td>
-                <td className="px-6 py-3">{ord.price * ord.qty}</td>
-                <td className="px-6 py-3 capitalize">{ord.status}</td>
-                <td className="px-6 py-3">
-                  <select
-                    onChange={(e) => handleOptionChange(e, ord)}
-                    defaultValue=""
-                    className="bg-white capitalize"
-                  >
-                    <option value="" disabled>
-                      choose action
-                    </option>
-                    <option value="ticket">open ticket</option>
-                    <option value="complete">complete order</option>
-                  </select>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table> */}
 				<Datatable
 					headers={header}
 					data={myOrders}

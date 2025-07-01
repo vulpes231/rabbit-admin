@@ -8,6 +8,7 @@ import {
 	getTrnxs,
 	resetComplete,
 } from "../features/trnxSlice";
+import { style } from "../constants";
 
 const CompleteError = ({ error }) => {
 	return <div className="absolute bottom-10 right-[10px] p-6">{error}</div>;
@@ -56,8 +57,8 @@ const Transactions = () => {
 
 	const handleModal = (row) => {
 		// console.log(row.status);
-		setTrnxId(row._id);
-		setStatus(row.status);
+		setTrnxId(row?._id);
+		setStatus(row?.status);
 		setConfirmModal(true);
 	};
 
@@ -85,7 +86,7 @@ const Transactions = () => {
 	useEffect(() => {
 		if (trnxs) {
 			// console.log(trnxs);
-			const sortedTrnxs = [...trnxs?.trnx].sort(
+			const sortedTrnxs = [...trnxs].sort(
 				(a, b) => new Date(b.date) - new Date(a.date)
 			);
 			setMyTrnxs(sortedTrnxs);
@@ -127,7 +128,7 @@ const Transactions = () => {
 
 	return (
 		<div>
-			<h3 className="font-bold text-lg p-4">Transactions</h3>
+			<h3 className={style.title}>Transactions</h3>
 			<div>
 				<Datatable
 					headers={header}

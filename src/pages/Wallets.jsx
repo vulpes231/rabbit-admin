@@ -9,6 +9,7 @@ import {
 	unSuspendWallet,
 } from "../features/walletSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { style } from "../constants";
 
 const header = [
 	{
@@ -139,7 +140,7 @@ const Wallets = () => {
 
 	return (
 		<div>
-			<h3 className="font-bold text-lg p-4">Wallets</h3>
+			<h3 className={style.title}>Wallets</h3>
 			<div>
 				<Datatable
 					headers={header}

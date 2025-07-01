@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Box from "./Box";
-import {} from "react-icons/fa";
 import { FaUserGroup, FaBoxArchive } from "react-icons/fa6";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,7 +45,7 @@ const Stats = () => {
 			<Box
 				icon={<FaBoxArchive />}
 				title={"transactions"}
-				value={trnxs?.trnx?.length ? trnxs.trnx.length : 0}
+				value={trnxs?.length ? trnxs.length : 0}
 			/>
 			<Box
 				icon={<MdAdminPanelSettings />}
@@ -66,7 +65,7 @@ const Stats = () => {
 			<Box
 				icon={<AiFillCustomerService />}
 				title={"tickets"}
-				value={tickets?.tickets?.length ? tickets.tickets.length : 0}
+				value={tickets?.length ? tickets.length : 0}
 				// value={0}
 			/>
 		</div>

@@ -71,6 +71,7 @@ const App = () => {
 		if (logoutSuccess) {
 			dispatch(resetLogin());
 			sessionStorage.clear();
+			localStorage.removeItem("activeLink");
 			dispatch(resetLogout());
 		}
 	}, [logoutSuccess]);
@@ -90,11 +91,17 @@ const App = () => {
 		<div className="h-screen bg-slate-200">
 			{!token && <Navbar />}
 			<div className="flex overflow-hidden h-screen">
-				<div className={`w-[280px] bg-[#333] text-[#fff]`}>
+				<div
+					className={`${
+						!token ? "hidden" : "flex"
+					}  w-[280px] bg-[#333] text-[#fff]`}
+				>
 					<Sidebar activeLink={activeLink} handleLink={handleActiveLink} />
 				</div>
 
-				<div className={`p-6 overflow-scroll mt-0 width`}>
+				<div
+					className={`mt-0 ${token ? "width overflow-scroll p-6" : "w-full"}`}
+				>
 					<Routes>
 						<Route path="/" element={<Content />} />
 						{/* <Route path="/signup" element={<Signup />} /> */}

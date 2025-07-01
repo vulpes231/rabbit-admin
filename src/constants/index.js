@@ -10,6 +10,7 @@ const style = {
 	label: "text-[14px] text-[#979797] font-normal",
 	button:
 		"bg-red-500 text-white font-semibold text-[14px] capitalize h-[42px] rounded-[5px] mt-4 hover:bg-red-600",
+	title: "font-semibold text-[#213000] text-[30px] p-4",
 };
 
 const authLinks = [

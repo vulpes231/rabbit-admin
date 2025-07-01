@@ -11,9 +11,9 @@ const Navbar = () => {
 	};
 
 	return (
-		<header className="w-full h-[80px] isolate top-0 bg-white">
+		<header className="w-full h-[80px] fixed left-0 top-0 bg-white">
 			<nav className="py-4 px-20 flex justify-between items-center ">
-				<h1 className="font-bold text-xl text-red-700">Rabbithole4Og's</h1>
+				<h1 className="font-black text-[24px] text-red-700">Rabbithole4Og's</h1>
 				<div className="flex items-center gap-6">
 					<ul className="hidden lg:flex items-center gap-4">
 						{links.map((lnk) => {

@@ -89,50 +89,49 @@ const Login = () => {
 	}, [accessToken, admin, dispatch, navigate]);
 
 	return (
-		<section className="w-full h-screen login-section">
-			<div className="w-full h-full flex items-center justify-center">
-				<form
-					onSubmit={handleLogin}
-					action=""
-					className="bg-white rounded-[10px] shadow-md p-8 flex flex-col gap-4 w-full md:w-[390px]"
-				>
-					<h4 className="text-[20px] font-semibold capitalize my-5">
-						Admin login
-					</h4>
-					<Formdiv>
-						<label className={style.label} htmlFor="">
-							username
-						</label>
-						<Forminput
-							type={"text"}
-							placeHolder={"Enter username"}
-							value={formData.username}
-							name="username"
-							handleChange={handleInputChange}
-						/>
-					</Formdiv>
+		<section className="w-full flex items-center mt-[80px] justify-center bg-slate-200 h-[calc(100vh-80px)]">
+			<form
+				onSubmit={handleLogin}
+				action=""
+				className="bg-white rounded-[10px] shadow-md p-8 flex flex-col gap-4 w-full md:w-[390px]"
+			>
+				<h4 className="text-[20px] font-semibold capitalize my-5">
+					Admin login
+				</h4>
+				<Formdiv>
+					<label className={style.label} htmlFor="">
+						username
+					</label>
+					<Forminput
+						type={"text"}
+						placeHolder={"Enter username"}
+						value={formData.username}
+						name="username"
+						handleChange={handleInputChange}
+					/>
+				</Formdiv>
 
-					<Formdiv>
-						<label className={style.label} htmlFor="">
-							password
-						</label>
-						<Forminput
-							type={"password"}
-							placeHolder={"Enter password"}
-							value={formData.password}
-							name="password"
-							handleChange={handleInputChange}
-						/>
-					</Formdiv>
-					{/* {error && (
+				<Formdiv>
+					<label className={style.label} htmlFor="">
+						password
+					</label>
+					<Forminput
+						type={"password"}
+						placeHolder={"Enter password"}
+						value={formData.password}
+						name="password"
+						handleChange={handleInputChange}
+					/>
+				</Formdiv>
+				{/* {error && (
 						<p className="text-red-700 font-sm bg-red-500 bg-opacity-10 p-2 ">
 							{error}
 						</p>
 					)} */}
 
-					<button className={style.button}>login</button>
-				</form>
-			</div>
+				<button className={style.button}>login</button>
+			</form>
+
 			{signinLoading && <Loadinmodal loadingText={"Logging in"} />}
 			{accessToken && <Successmodal successText={"Login Successful."} />}
 			{error && <Errormodal errorText={error} />}

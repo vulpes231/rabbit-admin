@@ -4,6 +4,7 @@ import { getAccessToken } from "../utils/utilities";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../features/userSlice";
+import { style } from "../constants";
 
 const header = [
 	{
@@ -71,7 +72,7 @@ const Users = () => {
 
 	return (
 		<section>
-			<h3 className="font-semibold text-[#213000] text-[30px] p-4">Users</h3>
+			<h3 className={style.title}>Users</h3>
 			<Datatable
 				headers={header}
 				data={myUsers}
