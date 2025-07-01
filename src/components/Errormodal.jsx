@@ -3,7 +3,7 @@ import { CgClose } from "react-icons/cg";
 
 const Errormodal = ({ errorText }) => {
 	return (
-		<div className="p-4 fixed top-[80px] right-[10px] text-red-500 z-[1000] bg-white w-[280px] shadow-md rounded-[10px]">
+		<div className="p-4 fixed top-[85px] right-[10px] text-red-500 z-[1000] bg-white w-[280px] shadow-md rounded-[10px]">
 			<div className="flex flex-col items-center justify-center gap-2">
 				<CgClose className="w-8 h-8 text-red-500" />
 				<span className="flex flex-col items-center">

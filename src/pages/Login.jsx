@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { resetLogin, signinAdmin } from "../features/loginSlice";
 import { useNavigate } from "react-router-dom";
 import { style } from "../constants";
+import { format } from "date-fns";
 
 const initialState = {
 	username: "",
@@ -39,7 +40,7 @@ const Login = () => {
 		e.preventDefault();
 		for (const key in formData) {
 			if (formData[key] === "") {
-				console.log(formData[key]);
+				// console.log(formData[key]);
 				setError(`${key[0].toUpperCase()}${key.slice(1)} is required!`);
 				return;
 			}
@@ -71,9 +72,11 @@ const Login = () => {
 	useEffect(() => {
 		let timeout;
 		if (accessToken && admin) {
+			const lastLogin = format(new Date(), "dd/MMM/yyyy hh:mm a");
 			try {
 				sessionStorage.setItem("accessToken", JSON.stringify(accessToken));
 				sessionStorage.setItem("admin", JSON.stringify(admin));
+				sessionStorage.setItem("lastLogin", JSON.stringify(lastLogin));
 			} catch (error) {
 				console.error("Failed to save access token:", error);
 			}

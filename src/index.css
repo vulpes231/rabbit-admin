@@ -7,6 +7,11 @@
 .section {
 	height: calc(100vh - 60px);
 }
+
 .login-section {
 	height: calc(100vh - 80px);
+}
+
+.width {
+	width: calc(100vw - 280px);
 }

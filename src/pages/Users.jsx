@@ -6,80 +6,83 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../features/userSlice";
 
 const header = [
-  {
-    id: "username",
-    name: "username",
-  },
-  {
-    id: "email",
-    name: "email",
-  },
-
-  {
-    id: "completedOrders",
-    name: "completedOrders",
-  },
-  {
-    id: "pendingOrders",
-    name: "pendingOrders",
-  },
-  {
-    id: "createdAt",
-    name: "createdAt",
-  },
+	{
+		id: "username",
+		name: "Username",
+	},
+	{
+		id: "email",
+		name: "Email",
+	},
+	{
+		id: "completedOrders",
+		name: "Completed Orders",
+	},
+	// {
+	// 	id: "pendingOrders",
+	// 	name: "Pending Orders",
+	// },
+	{
+		id: "createdAt",
+		name: "Created",
+	},
 ];
 
 const Users = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const accessToken = getAccessToken();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const accessToken = getAccessToken();
 
-  const [myUsers, setMyUsers] = useState([]);
+	const [myUsers, setMyUsers] = useState([]);
 
-  const { getError, getLoading, users } = useSelector((state) => state.user);
+	const { getUserError, getUserLoading, users } = useSelector(
+		(state) => state.user
+	);
 
-  const deleteUser = (e) => {
-    e.preventDefault();
-  };
+	const deleteUser = (e) => {
+		e.preventDefault();
+	};
 
-  useEffect(() => {
-    if (!accessToken) {
-      navigate("/");
-    } else {
-      dispatch(getUsers());
-    }
-  }, [accessToken]);
+	useEffect(() => {
+		if (!accessToken) {
+			navigate("/");
+		} else {
+			dispatch(getUsers());
+		}
+	}, [accessToken]);
 
-  useEffect(() => {
-    if (users) {
-      setMyUsers(users.users);
-    }
-  }, [users]);
+	useEffect(() => {
+		if (users) {
+			// Sort users by createdAt in descending order (newest first)
+			const sortedUsers = [...users].sort(
+				(a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+			);
+			setMyUsers(sortedUsers);
+		}
+	}, [users]);
 
-  // if (getLoading) {
-  //   return <p className="mt-5">Getting users...</p>;
-  // }
+	// if (getLoading) {
+	//   return <p className="mt-5">Getting users...</p>;
+	// }
 
-  useEffect(() => {
-    document.title = "Admin - Users";
-  }, []);
+	useEffect(() => {
+		document.title = "Admin - Users";
+	}, []);
 
-  return (
-    <div>
-      <h3 className="font-bold text-lg p-4">Users</h3>
-      <div>
-        <Datatable
-          headers={header}
-          data={myUsers}
-          title={"Delete"}
-          handleClick={deleteUser}
-          customClass={
-            "bg-red-500 text-white px-5 py-2 inline-flex rounded-md border border-red-500 hover:bg-red-700"
-          }
-        />
-      </div>
-    </div>
-  );
+	return (
+		<section>
+			<h3 className="font-semibold text-[#213000] text-[30px] p-4">Users</h3>
+			<Datatable
+				headers={header}
+				data={myUsers}
+				title={"Delete"}
+				handleClick={deleteUser}
+				customClass={
+					"bg-red-500 text-white px-5 py-2 inline-flex rounded-md border border-red-500 hover:bg-red-700"
+				}
+			/>
+		</section>
+	);
 };
 
 export default Users;
